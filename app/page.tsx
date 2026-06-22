@@ -3,427 +3,450 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
+import { useState } from "react"
 import { CLINICA_INFO, CURSOS } from "@/lib/demo-data"
 import {
   IconHeartbeat, IconDog, IconBuildingCastle, IconPhone,
   IconMapPin, IconChevronRight, IconStar, IconCertificate,
-  IconShieldCheck, IconArrowRight
+  IconShieldCheck, IconArrowRight, IconMenu2, IconX
 } from "@tabler/icons-react"
 
-const riseIn = { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
-const container = { animate: { transition: { staggerChildren: 0.09 } } }
+const ri = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+}
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "hidden" }}>
 
-      {/* ── NAV ── */}
+      {/* ── NAV — fixed, limpio, mobile-safe ── */}
       <nav style={{
-        position: "fixed", top: 0, width: "100%", zIndex: 40,
-        background: "rgba(8,6,16,0.88)",
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        height: 56,
+        background: "rgba(8,6,16,0.96)",
         borderBottom: "1px solid var(--border)",
         backdropFilter: "blur(20px)",
+        display: "flex", alignItems: "center",
+        padding: "0 16px",
+        justifyContent: "space-between",
       }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 20px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="/images/app-icon.png" alt="logo" style={{ width: 36, height: 36, borderRadius: 10 }} />
-            <div>
-              <div style={{ fontWeight: 700, color: "var(--txt)", fontSize: 14, lineHeight: 1.2 }}>Vet & Pets Care</div>
-              <div style={{ fontSize: 10, color: "var(--txt3)", letterSpacing: ".05em" }}>Apan, Hidalgo</div>
-            </div>
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <img src="/images/app-icon.png" alt="logo"
+            style={{ width: 32, height: 32, borderRadius: 8, flexShrink: 0 }} />
+          <div style={{ lineHeight: 1.2 }}>
+            <div style={{ fontWeight: 700, color: "var(--txt)", fontSize: 13 }}>Vet & Pets Care</div>
+            <div style={{ fontSize: 9, color: "var(--txt3)", letterSpacing: ".04em" }}>Apan, Hidalgo</div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-            <a href="#servicios" style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}>Servicios</a>
-            <a href="#k9" style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}>Instituto K9</a>
-            <a href="#hotel" style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}>Hotel</a>
-            <Link href="/sign-in" style={{
-              fontSize: 13, fontWeight: 600, color: "var(--txt)",
-              padding: "8px 18px", borderRadius: 99,
-              background: "linear-gradient(135deg, var(--red-2), var(--red))",
-              textDecoration: "none",
-              boxShadow: "0 0 0 0 var(--red-glow)",
-              animation: "glowPulse 2.5s ease-in-out infinite",
-            }}>
-              Entrar
-            </Link>
-          </div>
+        </div>
+
+        {/* Desktop links */}
+        <div style={{
+          display: "none",
+          gap: 28, alignItems: "center",
+        }} className="desktop-nav">
+          <style>{`@media(min-width:640px){.desktop-nav{display:flex!important}}.mobile-menu-btn{display:flex}.@media(min-width:640px){.mobile-menu-btn{display:none!important}}`}</style>
+          {["#clinica","#k9","#hotel"].map((href, i) => (
+            <a key={href} href={href} style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}
+              onClick={() => setMenuOpen(false)}>
+              {["Clínica","Instituto K9","Hotel"][i]}
+            </a>
+          ))}
+          <Link href="/sign-in" style={{
+            fontSize: 13, fontWeight: 600, color: "var(--txt)",
+            padding: "8px 18px", borderRadius: 99,
+            background: "var(--red-2)",
+            textDecoration: "none",
+          }}>Entrar</Link>
+        </div>
+
+        {/* Mobile: solo botón entrar */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <Link href="/sign-in" style={{
+            fontSize: 12, fontWeight: 700, color: "var(--txt)",
+            padding: "7px 16px", borderRadius: 99,
+            background: "var(--red-2)",
+            textDecoration: "none", whiteSpace: "nowrap",
+          }}>Entrar</Link>
         </div>
       </nav>
 
-      {/* ── HERO ── */}
-      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center" }}>
-        {/* Imagen hero de Higgsfield */}
-        <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <Image src="/images/hero-clinica.jpg" alt="Clínica Vet & Pets Care" fill
-            style={{ objectFit: "cover", objectPosition: "center 30%" }}
-            priority />
-          {/* Overlay gradiente obsidiana */}
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to right, rgba(8,6,16,0.92) 0%, rgba(8,6,16,0.75) 50%, rgba(8,6,16,0.4) 100%)",
-          }} />
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to top, rgba(8,6,16,0.9) 0%, transparent 60%)",
-          }} />
-        </div>
+      {/* ── HERO — imagen llena, texto sobre gradiente ── */}
+      <section id="hero" style={{ position: "relative", height: "100svh", minHeight: 600 }}>
+        <Image src="/images/hero-clinica.jpg" alt="Clínica Vet & Pets Care" fill
+          style={{ objectFit: "cover", objectPosition: "center 25%" }} priority />
+        {/* Gradiente de abajo hacia arriba — texto legible */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to top, rgba(8,6,16,1) 0%, rgba(8,6,16,0.6) 50%, rgba(8,6,16,0.15) 100%)",
+        }} />
 
-        <div style={{ position: "relative", maxWidth: 1100, margin: "0 auto", padding: "100px 20px 60px", width: "100%" }}>
-          <motion.div initial="initial" animate="animate" variants={container}
-            style={{ maxWidth: 600 }}>
-
-            {/* Badge */}
-            <motion.div variants={riseIn} style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              background: "rgba(155,28,28,0.18)",
-              border: "1px solid rgba(185,28,28,0.3)",
-              borderRadius: 99, padding: "6px 14px", marginBottom: 24,
-            }}>
-              <IconCertificate size={13} stroke={2} style={{ color: "var(--red-2)" }} />
-              <span style={{ fontSize: 11, fontWeight: 600, color: "#f87171", letterSpacing: ".06em" }}>
-                20 AÑOS DE EXPERIENCIA
-              </span>
-              <div style={{ display: "flex", gap: 1 }}>
-                {[...Array(5)].map((_, i) => (
-                  <IconStar key={i} size={9} stroke={2} style={{ color: "#f59e0b", fill: "#f59e0b" }} />
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.h1 variants={riseIn} style={{
-              fontSize: "clamp(36px,6vw,72px)", fontWeight: 800,
-              color: "var(--txt)", lineHeight: 1.05,
-              letterSpacing: "-2px", marginBottom: 16,
-            }}>
-              Clínica Veterinaria<br />
-              <span style={{
-                background: "linear-gradient(135deg, var(--red-2), #f87171)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                Vet & Pets Care
-              </span>
-            </motion.h1>
-
-            <motion.p variants={riseIn} style={{
-              fontSize: 18, color: "var(--txt2)", lineHeight: 1.6,
-              marginBottom: 10, maxWidth: 520,
-            }}>
-              Servicio Médico Veterinario en pequeñas y grandes especies.
-            </motion.p>
-            <motion.p variants={riseIn} style={{
-              fontSize: 15, color: "var(--txt3)", marginBottom: 36,
-            }}>
-              Estética Canina · Hotel Campestre · Instituto K9 Country Club
-            </motion.p>
-
-            <motion.div variants={riseIn} style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link href="/sign-in" style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "linear-gradient(135deg, var(--red-2), var(--red))",
-                color: "var(--txt)", fontWeight: 700, fontSize: 15,
-                padding: "14px 28px", borderRadius: 14, textDecoration: "none",
-                boxShadow: "0 4px 24px var(--red-glow)",
-              }}>
-                <IconHeartbeat size={18} stroke={2} /> Agenda tu cita
-              </Link>
-              <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`} style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid var(--border)",
-                color: "var(--txt2)", fontWeight: 600, fontSize: 15,
-                padding: "14px 28px", borderRadius: 14, textDecoration: "none",
-              }}>
-                <IconPhone size={18} stroke={2} /> {CLINICA_INFO.telefono}
-              </a>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div variants={riseIn} style={{
-              display: "flex", gap: 24, marginTop: 48, flexWrap: "wrap",
-            }}>
-              {[
-                { v: "20+", l: "Años" }, { v: "500+", l: "Pacientes" },
-                { v: "3", l: "Servicios" }, { v: "100%", l: "Dedicación" },
-              ].map(s => (
-                <div key={s.l}>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>{s.v}</div>
-                  <div style={{ fontSize: 11, color: "var(--txt3)", letterSpacing: ".08em", textTransform: "uppercase" }}>{s.l}</div>
-                </div>
+        {/* Contenido en la parte baja */}
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0,
+          padding: "0 20px 80px",
+          maxWidth: 560,
+        }}>
+          <motion.div {...ri} transition={{ duration: 0.5, delay: 0.1 }} style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            background: "rgba(155,28,28,0.85)",
+            border: "1px solid rgba(185,28,28,0.5)",
+            borderRadius: 99, padding: "5px 12px", marginBottom: 16,
+          }}>
+            <IconCertificate size={12} stroke={2} style={{ color: "#fca5a5" }} />
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#fca5a5", letterSpacing: ".08em" }}>
+              20 AÑOS DE EXPERIENCIA
+            </span>
+            <div style={{ display: "flex", gap: 1 }}>
+              {[...Array(5)].map((_, i) => (
+                <IconStar key={i} size={8} stroke={2} style={{ color: "#fbbf24" }} />
               ))}
-            </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.h1 {...ri} transition={{ duration: 0.55, delay: 0.15 }} style={{
+            fontSize: "clamp(30px,8vw,52px)", fontWeight: 800,
+            color: "var(--txt)", lineHeight: 1.05, letterSpacing: "-1.5px",
+            marginBottom: 10,
+          }}>
+            Clínica Veterinaria<br />
+            <span style={{
+              background: "linear-gradient(135deg, #f87171, var(--red-2))",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>Vet & Pets Care</span>
+          </motion.h1>
+
+          <motion.p {...ri} transition={{ duration: 0.5, delay: 0.2 }} style={{
+            fontSize: 15, color: "rgba(240,244,255,0.75)", lineHeight: 1.55, marginBottom: 24,
+          }}>
+            Servicio Médico Veterinario en pequeñas y grandes especies.<br />
+            <span style={{ color: "rgba(168,180,208,0.6)", fontSize: 13 }}>
+              Estética Canina · Hotel Campestre · Instituto K9 Country Club
+            </span>
+          </motion.p>
+
+          <motion.div {...ri} transition={{ duration: 0.5, delay: 0.25 }}
+            style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <Link href="/sign-in" style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "var(--red-2)", color: "var(--txt)",
+              fontWeight: 700, fontSize: 14, padding: "13px 24px",
+              borderRadius: 14, textDecoration: "none",
+              boxShadow: "0 4px 20px rgba(185,28,28,0.5)",
+            }}>
+              <IconHeartbeat size={17} stroke={2} /> Agenda tu cita
+            </Link>
+            <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`} style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "rgba(240,244,255,0.08)", border: "1px solid rgba(240,244,255,0.12)",
+              color: "var(--txt2)", fontWeight: 600, fontSize: 14,
+              padding: "13px 20px", borderRadius: 14, textDecoration: "none",
+            }}>
+              <IconPhone size={17} stroke={2} /> {CLINICA_INFO.telefono}
+            </a>
           </motion.div>
         </div>
       </section>
 
-      {/* ── SERVICIOS ── */}
-      <section id="servicios" style={{ padding: "100px 20px", maxWidth: 1100, margin: "0 auto" }}>
-        <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={container}>
-          <motion.div variants={riseIn} style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={{
-              display: "inline-block", fontSize: 10, fontWeight: 700,
-              color: "var(--red-2)", letterSpacing: ".14em", textTransform: "uppercase",
-              marginBottom: 12,
-            }}>Nuestros Servicios</div>
-            <h2 style={{
-              fontSize: "clamp(28px,4vw,48px)", fontWeight: 800, color: "var(--txt)",
-              letterSpacing: "-1.5px", lineHeight: 1.1,
-            }}>
-              Todo para tu mascota<br />
-              <span style={{ color: "var(--txt2)", fontWeight: 400 }}>en un solo lugar</span>
-            </h2>
-          </motion.div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 20 }}>
-            {[
-              {
-                Icon: IconHeartbeat, label: "Clínica Veterinaria",
-                desc: "Medicina veterinaria para pequeñas y grandes especies. Consultas, cirugías, vacunación, hospitalización.",
-                items: ["Consultas generales y especialidades", "Vacunación y desparasitación", "Cirugías y hospitalizaciones", "Expediente clínico digital"],
-                color: "var(--red-2)", href: "/app",
-              },
-              {
-                Icon: IconDog, label: "Instituto K9",
-                desc: "Centro de adiestramiento canino con amor y respeto. Instalaciones campestres en Apan, Hidalgo.",
-                items: ["Estimulación temprana", "Obediencia básica y avanzada", "Protección N1, N2 y Especialización", "Detección de aromas"],
-                color: "var(--silver)", href: "#k9",
-              },
-              {
-                Icon: IconBuildingCastle, label: "Hotel Campestre",
-                desc: "Tu perro merece vacaciones. Instalaciones premium con supervisión veterinaria.",
-                items: ["Suites y cabañas campestres", "Supervisión veterinaria diaria", "Ejercicio y socialización", "Reporte diario por WhatsApp"],
-                color: "var(--green)", href: "#hotel",
-              },
-            ].map(({ Icon, label, desc, items, color, href }, i) => (
-              <motion.div key={label} variants={riseIn}
-                style={{
-                  background: "var(--card)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 20, padding: 28,
-                  transition: "all 0.3s cubic-bezier(.22,1,.36,1)",
-                  cursor: "pointer",
-                }}
-                whileHover={{ y: -4, borderColor: color }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: 14, display: "flex",
-                  alignItems: "center", justifyContent: "center", marginBottom: 20,
-                  background: `${color}18`,
-                  border: `1px solid ${color}30`,
-                }}>
-                  <Icon size={24} stroke={1.5} style={{ color }} />
-                </div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: "var(--txt)", marginBottom: 10 }}>{label}</h3>
-                <p style={{ fontSize: 13, color: "var(--txt2)", lineHeight: 1.6, marginBottom: 20 }}>{desc}</p>
-                <ul style={{ listStyle: "none", padding: 0, marginBottom: 24, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {items.map(item => (
-                    <li key={item} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--txt3)" }}>
-                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: color, flexShrink: 0 }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link href={href} style={{
-                  display: "inline-flex", alignItems: "center", gap: 4,
-                  fontSize: 12, fontWeight: 600, color,
-                  textDecoration: "none",
-                }}>
-                  Ver más <IconChevronRight size={14} stroke={2} />
-                </Link>
-              </motion.div>
-            ))}
+      {/* ── 3 SERVICIOS — cards con foto ── */}
+      <section id="servicios" style={{ padding: "64px 16px" }}>
+        <motion.div initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }}
+          viewport={{ once: true }} transition={{ duration:0.5 }}
+          style={{ textAlign:"center", marginBottom: 36 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "var(--red-2)", letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 8 }}>
+            Nuestros Servicios
           </div>
+          <h2 style={{ fontSize: "clamp(22px,5vw,36px)", fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px", lineHeight: 1.1 }}>
+            Todo para tu mascota
+          </h2>
         </motion.div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 560, margin: "0 auto" }}>
+          {[
+            {
+              id: "clinica", img: "/images/hero-clinica.jpg", label: "Clínica Veterinaria",
+              tag: "Medicina especializada", color: "var(--red-2)",
+              desc: "Consultas, cirugías, vacunación y hospitalización para pequeñas y grandes especies.",
+              href: "/app",
+            },
+            {
+              id: "k9", img: "/images/hero-k9.jpg", label: "Instituto K9 Country Club",
+              tag: "Adiestramiento", color: "var(--silver)",
+              desc: "Desde estimulación temprana hasta protección especializada. Instalaciones campestres.",
+              href: "#k9",
+            },
+            {
+              id: "hotel", img: "/images/hero-clinica.jpg", label: "Hotel Campestre",
+              tag: "Hospedaje premium", color: "var(--green)",
+              desc: "Tu perro disfruta vacaciones con supervisión veterinaria diaria en Apan, Hidalgo.",
+              href: "#hotel",
+            },
+          ].map((s, i) => (
+            <motion.div key={s.id}
+              initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }}
+              viewport={{ once: true }} transition={{ duration:0.45, delay: i*0.08 }}>
+              <Link href={s.href} style={{
+                display: "block", borderRadius: 20, overflow: "hidden",
+                textDecoration: "none", position: "relative",
+                border: "1px solid var(--border)",
+              }}>
+                {/* Imagen */}
+                <div style={{ position: "relative", height: 200 }}>
+                  <Image src={s.img} alt={s.label} fill
+                    style={{ objectFit: "cover", objectPosition: "center 30%" }} />
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(to top, rgba(8,6,16,0.95) 0%, rgba(8,6,16,0.3) 60%, transparent 100%)",
+                  }} />
+                  {/* Tag sobre imagen */}
+                  <div style={{
+                    position: "absolute", top: 14, left: 14,
+                    background: "rgba(8,6,16,0.75)", backdropFilter: "blur(8px)",
+                    border: `1px solid ${s.color}40`,
+                    borderRadius: 99, padding: "4px 10px",
+                    fontSize: 9, fontWeight: 700, color: s.color,
+                    letterSpacing: ".1em", textTransform: "uppercase",
+                  }}>
+                    {s.tag}
+                  </div>
+                </div>
+
+                {/* Texto bajo imagen */}
+                <div style={{
+                  background: "var(--card)", padding: "18px 20px",
+                  display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12,
+                }}>
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "var(--txt)", marginBottom: 6 }}>{s.label}</div>
+                    <div style={{ fontSize: 12, color: "var(--txt3)", lineHeight: 1.5 }}>{s.desc}</div>
+                  </div>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 99, flexShrink: 0,
+                    background: `${s.color}15`, display: "flex",
+                    alignItems: "center", justifyContent: "center",
+                  }}>
+                    <IconChevronRight size={16} stroke={2} style={{ color: s.color }} />
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {/* ── INSTITUTO K9 ── */}
       <section id="k9" style={{
-        padding: "100px 20px",
         background: "var(--surface)",
         borderTop: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
+        padding: "64px 16px",
       }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={container}>
+        {/* Hero foto K9 */}
+        <div style={{
+          position: "relative", height: 260, borderRadius: 20,
+          overflow: "hidden", marginBottom: 32,
+          maxWidth: 560, margin: "0 auto 32px",
+        }}>
+          <Image src="/images/hero-k9.jpg" alt="Instituto K9" fill
+            style={{ objectFit: "cover", objectPosition: "center 40%" }} />
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(to right, rgba(8,6,16,0.9) 0%, rgba(8,6,16,0.2) 100%)",
+          }} />
+          <div style={{ position: "absolute", bottom: 24, left: 24 }}>
+            <div style={{ fontSize: 10, color: "var(--silver)", fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 6 }}>
+              Instituto K9 · Country Club
+            </div>
+            <h2 style={{ fontSize: 24, fontWeight: 800, color: "var(--txt)", letterSpacing: "-0.5px", lineHeight: 1.15 }}>
+              Formación canina<br />con amor y respeto
+            </h2>
+          </div>
+        </div>
 
-            {/* Hero K9 */}
-            <div style={{ borderRadius: 24, overflow: "hidden", marginBottom: 64, position: "relative", height: 400 }}>
-              <Image src="/images/hero-k9.jpg" alt="Instituto K9 Country Club" fill
-                style={{ objectFit: "cover", objectPosition: "center 40%" }} />
+        {/* Cursos — scroll horizontal en mobile */}
+        <div style={{
+          display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8,
+          scrollSnapType: "x mandatory",
+          WebkitOverflowScrolling: "touch",
+          maxWidth: 560, margin: "0 auto",
+        }}>
+          {CURSOS.map((c) => (
+            <div key={c.id} style={{
+              minWidth: 240, flexShrink: 0,
+              background: "var(--card)", border: "1px solid var(--border)",
+              borderRadius: 16, padding: "18px 16px",
+              scrollSnapAlign: "start",
+            }}>
               <div style={{
-                position: "absolute", inset: 0,
-                background: "linear-gradient(to right, rgba(8,6,16,0.85), transparent 60%)",
-              }} />
-              <div style={{ position: "absolute", left: 40, top: "50%", transform: "translateY(-50%)" }}>
-                <div style={{ fontSize: 11, color: "var(--silver)", fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", marginBottom: 12 }}>
-                  Instituto K9 · Country Club
+                fontSize: 9, fontWeight: 700, letterSpacing: ".1em",
+                textTransform: "uppercase", color: "var(--silver)",
+                background: "rgba(200,205,216,0.08)", border: "1px solid rgba(200,205,216,0.12)",
+                display: "inline-block", padding: "3px 8px", borderRadius: 4, marginBottom: 8,
+              }}>{c.nivel}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "var(--txt)", marginBottom: 3 }}>{c.nombre}</div>
+              <div style={{ fontSize: 11, color: "var(--txt3)", marginBottom: 12 }}>{c.subtitulo}</div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                <div>
+                  <div style={{ fontSize: 10, color: "var(--txt3)" }}>{c.duracion}</div>
+                  <div style={{
+                    display: "inline-flex", alignItems: "center", gap: 4, marginTop: 4,
+                    fontSize: 9, fontWeight: 600,
+                    background: "var(--green-dim)", color: "var(--green)",
+                    padding: "3px 8px", borderRadius: 99,
+                  }}>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--green)" }} />
+                    {c.alumnos_activos} alumnos
+                  </div>
                 </div>
-                <h2 style={{
-                  fontSize: "clamp(24px,4vw,44px)", fontWeight: 800, color: "var(--txt)",
-                  letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 12,
-                }}>
-                  Formación canina<br />con amor y respeto
-                </h2>
-                <div style={{ fontSize: 14, color: "var(--txt3)" }}>
-                  Instalaciones campestres · Apan, Hidalgo
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>
+                    ${c.precio.toLocaleString()}
+                  </div>
+                  <div style={{ fontSize: 9, color: "var(--txt3)", textTransform: "uppercase" }}>MXN</div>
                 </div>
               </div>
             </div>
+          ))}
+          {/* Spacer para último card */}
+          <div style={{ minWidth: 16, flexShrink: 0 }} />
+        </div>
 
-            {/* Cursos */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
-              {CURSOS.map((c, i) => (
-                <motion.div key={c.id} variants={riseIn}
-                  style={{
-                    background: "var(--card)", border: "1px solid var(--border)",
-                    borderRadius: 16, padding: 24,
-                    transition: "all 0.25s ease",
-                  }}
-                  whileHover={{ borderColor: "var(--silver)", y: -2 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                    <div>
-                      <div style={{
-                        display: "inline-block", fontSize: 9, fontWeight: 700,
-                        letterSpacing: ".1em", textTransform: "uppercase",
-                        padding: "3px 8px", borderRadius: 4, marginBottom: 8,
-                        background: "rgba(200,205,216,0.1)", color: "var(--silver)",
-                      }}>{c.nivel}</div>
-                      <h3 style={{ fontSize: 15, fontWeight: 700, color: "var(--txt)", lineHeight: 1.2 }}>{c.nombre}</h3>
-                      <p style={{ fontSize: 11, color: "var(--txt3)", marginTop: 2 }}>{c.subtitulo}</p>
-                    </div>
-                    <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
-                      <div style={{ fontSize: 22, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>
-                        ${c.precio.toLocaleString()}
-                      </div>
-                      <div style={{ fontSize: 9, color: "var(--txt3)", textTransform: "uppercase" }}>MXN</div>
-                    </div>
-                  </div>
-                  <p style={{ fontSize: 12, color: "var(--txt2)", lineHeight: 1.6, marginBottom: 16 }}>{c.descripcion}</p>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ fontSize: 10, color: "var(--txt3)" }}>{c.duracion} · {c.sesiones}</div>
-                    <div style={{
-                      display: "inline-flex", alignItems: "center", gap: 4,
-                      fontSize: 10, fontWeight: 600,
-                      background: "var(--green-dim)", color: "var(--green)",
-                      padding: "3px 8px", borderRadius: 99,
-                    }}>
-                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--green)" }} />
-                      {c.alumnos_activos} alumnos
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        <div style={{ textAlign: "center", marginTop: 24 }}>
+          <Link href="/sign-in" style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontSize: 13, fontWeight: 600, color: "var(--silver)",
+            textDecoration: "none",
+            background: "rgba(200,205,216,0.08)", border: "1px solid rgba(200,205,216,0.15)",
+            padding: "10px 20px", borderRadius: 99,
+          }}>
+            Ver todos los cursos <IconChevronRight size={14} stroke={2} />
+          </Link>
         </div>
       </section>
 
       {/* ── HOTEL ── */}
-      <section id="hotel" style={{ padding: "100px 20px", maxWidth: 1100, margin: "0 auto" }}>
-        <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={container}>
-          <motion.div variants={riseIn} style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "var(--green)", letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 12 }}>
-              Hotel Campestre
-            </div>
-            <h2 style={{ fontSize: "clamp(28px,4vw,48px)", fontWeight: 800, color: "var(--txt)", letterSpacing: "-1.5px" }}>
-              Tu perro,{" "}
-              <span style={{ color: "var(--txt3)", fontWeight: 400 }}>en las mejores manos</span>
-            </h2>
-          </motion.div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, alignItems: "center" }}>
-            <motion.div variants={riseIn}>
-              <p style={{ fontSize: 15, color: "var(--txt2)", lineHeight: 1.7, marginBottom: 32 }}>
-                Instalaciones campestres en Apan, Hidalgo. Mientras tú estás de viaje, tu mejor amigo disfruta de espacio, ejercicio, cuidado veterinario y mucho amor.
-              </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 32 }}>
-                {[
-                  { e: "🏡", t: "Suites y Cabañas", d: "Espacios amplios" },
-                  { e: "🩺", t: "Vet en sitio", d: "Supervisión médica" },
-                  { e: "📱", t: "Reportes diarios", d: "Fotos por WhatsApp" },
-                  { e: "🌿", t: "Áreas verdes", d: "Juego al aire libre" },
-                ].map(f => (
-                  <div key={f.t} style={{
-                    background: "var(--card)", border: "1px solid var(--border)",
-                    borderRadius: 14, padding: 16,
-                  }}>
-                    <div style={{ fontSize: 24, marginBottom: 8 }}>{f.e}</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: "var(--txt)", marginBottom: 2 }}>{f.t}</div>
-                    <div style={{ fontSize: 11, color: "var(--txt3)" }}>{f.d}</div>
-                  </div>
-                ))}
-              </div>
-              <Link href="/app/hotel" style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "var(--green-dim)", border: "1px solid rgba(16,217,164,0.2)",
-                color: "var(--green)", fontWeight: 700, fontSize: 14,
-                padding: "12px 24px", borderRadius: 12, textDecoration: "none",
-              }}>
-                Reservar hotel <IconArrowRight size={16} stroke={2} />
-              </Link>
-            </motion.div>
-
-            <motion.div variants={riseIn} style={{
-              background: "var(--card)", border: "1px solid var(--border)",
-              borderRadius: 20, padding: 28,
-            }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--txt)", marginBottom: 24 }}>Tarifas Hotel Campestre</h3>
-              {[
-                { t: "Suite Bosque", d: "Perros grandes", p: 380 },
-                { t: "Cabaña Campo — Mediano", d: "Perros medianos", p: 320 },
-                { t: "Cabaña Campo — Pequeño", d: "Perros pequeños", p: 280 },
-              ].map((h, i) => (
-                <div key={h.t} style={{
-                  display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "16px 0",
-                  borderBottom: i < 2 ? "1px solid var(--border)" : "none",
-                }}>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: "var(--txt)" }}>{h.t}</div>
-                    <div style={{ fontSize: 11, color: "var(--txt3)" }}>{h.d}</div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 22, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>${h.p}</div>
-                    <div style={{ fontSize: 9, color: "var(--txt3)", textTransform: "uppercase" }}>MXN / día</div>
-                  </div>
-                </div>
-              ))}
-              <div style={{
-                marginTop: 20, padding: 14, borderRadius: 12,
-                background: "var(--green-dim)",
-                border: "1px solid rgba(16,217,164,0.15)",
-              }}>
-                <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4 }}>
-                  <IconShieldCheck size={14} stroke={2} style={{ color: "var(--green)" }} />
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--green)" }}>Incluye en todos los planes</span>
-                </div>
-                <div style={{ fontSize: 11, color: "var(--txt3)", lineHeight: 1.6 }}>
-                  Alimentación · Ejercicio · Supervisión veterinaria · Reporte diario
-                </div>
-              </div>
-            </motion.div>
+      <section id="hotel" style={{ padding: "64px 16px" }}>
+        <div style={{ maxWidth: 560, margin: "0 auto" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "var(--green)", letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 8 }}>
+            Hotel Campestre
           </div>
-        </motion.div>
+          <h2 style={{ fontSize: "clamp(22px,5vw,36px)", fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px", marginBottom: 24 }}>
+            Tu perro, en las mejores manos
+          </h2>
+
+          {/* Tarifas — limpias */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 28 }}>
+            {[
+              { t: "Suite Bosque", d: "Perros grandes", p: 380 },
+              { t: "Cabaña Campo — Mediano", d: "Perros medianos", p: 320 },
+              { t: "Cabaña Campo — Pequeño", d: "Perros pequeños", p: 280 },
+            ].map((h, i) => (
+              <div key={h.t} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "16px 0",
+                borderBottom: "1px solid var(--border)",
+              }}>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: "var(--txt)" }}>{h.t}</div>
+                  <div style={{ fontSize: 11, color: "var(--txt3)", marginTop: 2 }}>{h.d}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>${h.p}</div>
+                  <div style={{ fontSize: 9, color: "var(--txt3)", textTransform: "uppercase" }}>MXN / día</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Incluye */}
+          <div style={{
+            padding: "14px 16px", borderRadius: 14,
+            background: "var(--green-dim)", border: "1px solid rgba(16,217,164,0.18)",
+            marginBottom: 24,
+          }}>
+            <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4 }}>
+              <IconShieldCheck size={13} stroke={2} style={{ color: "var(--green)" }} />
+              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--green)" }}>Incluye en todos los planes</span>
+            </div>
+            <div style={{ fontSize: 11, color: "rgba(16,217,164,0.65)", lineHeight: 1.6 }}>
+              Alimentación · Ejercicio diario · Supervisión veterinaria · Reporte por WhatsApp
+            </div>
+          </div>
+
+          <Link href="/app/hotel" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            background: "var(--green-dim)", border: "1px solid rgba(16,217,164,0.2)",
+            color: "var(--green)", fontWeight: 700, fontSize: 14,
+            padding: "14px", borderRadius: 14, textDecoration: "none",
+          }}>
+            Reservar hotel <IconArrowRight size={16} stroke={2} />
+          </Link>
+        </div>
+      </section>
+
+      {/* ── STATS + CTA FINAL ── */}
+      <section style={{
+        padding: "48px 16px 100px",
+        background: "var(--void)",
+        borderTop: "1px solid var(--border)",
+      }}>
+        <div style={{ maxWidth: 560, margin: "0 auto" }}>
+          {/* Stats grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 0, marginBottom: 40 }}>
+            {[
+              { v: "20+", l: "Años" }, { v: "500+", l: "Pacientes" },
+              { v: "3", l: "Servicios" }, { v: "⭐⭐⭐⭐⭐", l: "Reseñas" },
+            ].map((s, i) => (
+              <div key={s.l} style={{
+                textAlign: "center", padding: "16px 8px",
+                borderRight: i < 3 ? "1px solid var(--border)" : "none",
+              }}>
+                <div style={{ fontSize: i === 3 ? 14 : 24, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px", lineHeight: 1 }}>{s.v}</div>
+                <div style={{ fontSize: 9, color: "var(--txt3)", marginTop: 4, letterSpacing: ".06em", textTransform: "uppercase" }}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <Link href="/sign-in" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            background: "linear-gradient(135deg, var(--red-2), var(--red))",
+            color: "var(--txt)", fontWeight: 700, fontSize: 15,
+            padding: "16px", borderRadius: 16, textDecoration: "none",
+            boxShadow: "0 4px 24px rgba(185,28,28,0.35)",
+            marginBottom: 12,
+          }}>
+            <IconHeartbeat size={18} stroke={2} /> Crear mi cuenta gratis
+          </Link>
+          <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`} style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            color: "var(--txt3)", fontWeight: 600, fontSize: 13,
+            padding: "12px", borderRadius: 14, textDecoration: "none",
+            border: "1px solid var(--border)",
+          }}>
+            <IconPhone size={15} stroke={2} /> Llamar / WhatsApp · {CLINICA_INFO.telefono}
+          </a>
+        </div>
       </section>
 
       {/* ── FOOTER ── */}
       <footer style={{
-        padding: "32px 20px", textAlign: "center",
+        padding: "20px 16px", textAlign: "center",
         borderTop: "1px solid var(--border)",
         background: "var(--void)",
       }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-          <img src="/images/app-icon.png" alt="logo" style={{ width: 24, height: 24, borderRadius: 6 }} />
-          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--txt2)" }}>Vet & Pets Care</span>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 4 }}>
+          <img src="/images/app-icon.png" alt="logo" style={{ width: 22, height: 22, borderRadius: 6 }} />
+          <span style={{ fontSize: 12, fontWeight: 600, color: "var(--txt3)" }}>Vet & Pets Care · vetpets.store</span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "var(--txt3)" }}>
-            <IconMapPin size={12} stroke={2} /> {CLINICA_INFO.ubicacion}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "var(--txt3)" }}>
-            <IconPhone size={12} stroke={2} /> {CLINICA_INFO.telefono}
-          </div>
+        <div style={{ fontSize: 11, color: "var(--txt3)" }}>
+          <IconMapPin size={10} stroke={2} style={{ verticalAlign: "middle" }} /> {CLINICA_INFO.ubicacion} · © 2026
         </div>
-        <div style={{ fontSize: 10, color: "var(--txt3)", marginTop: 12 }}>© 2026 · vetpets.store</div>
       </footer>
 
     </div>
