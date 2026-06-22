@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { CITAS, MASCOTAS } from "@/lib/demo-data"
-import { Calendar, Clock, CheckCircle, Plus, X } from "lucide-react"
+import { IconCalendar, IconClock, IconCircleCheck, IconPlus, IconX } from "@tabler/icons-react"
 
 export default function CitasPage() {
   const [showModal, setShowModal] = useState(false)
@@ -21,7 +21,7 @@ export default function CitasPage() {
         <button onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white shine-hover"
           style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)" }}>
-          <Plus size={16} /> Nueva cita
+          <IconPlus size={16} /> Nueva cita
         </button>
       </div>
 
@@ -33,18 +33,18 @@ export default function CitasPage() {
               <div className="flex items-start gap-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                   style={{ background: "rgba(185,28,28,0.12)" }}>
-                  <Calendar size={20} className="text-red-400" />
+                  <IconCalendar size={20} className="text-red-400" />
                 </div>
                 <div>
                   <div className="font-bold text-white">{c.tipo}</div>
                   <div className="text-xs text-[#A3A3A3] mt-0.5">{c.mascota} · {c.veterinario}</div>
                   <div className="flex items-center gap-3 mt-2">
                     <div className="flex items-center gap-1 text-xs text-[#A3A3A3]">
-                      <Calendar size={12} />
+                      <IconCalendar size={12} />
                       {new Date(c.fecha).toLocaleDateString("es-MX", { weekday:"short", day:"numeric", month:"short" })}
                     </div>
                     <div className="flex items-center gap-1 text-xs text-[#D97706]">
-                      <Clock size={12} />{c.hora}
+                      <IconClock size={12} />{c.hora}
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@ export default function CitasPage() {
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-black text-white">Nueva cita</h2>
               <button onClick={() => setShowModal(false)} className="text-[#525252] hover:text-white">
-                <X size={20} />
+                <IconX size={20} />
               </button>
             </div>
             {["mascota", "tipo", "fecha", "hora"].map(f => (
@@ -95,7 +95,7 @@ export default function CitasPage() {
             <button onClick={agendar}
               className="w-full py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 shine-hover"
               style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)" }}>
-              {saved ? <><CheckCircle size={16} /> ¡Cita agendada!</> : "Agendar cita"}
+              {saved ? <><IconCircleCheck size={16} /> ¡Cita agendada!</> : "Agendar cita"}
             </button>
           </motion.div>
         </div>

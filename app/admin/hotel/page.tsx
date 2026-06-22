@@ -1,6 +1,6 @@
 "use client"
 import { HOSPEDADOS, HABITACIONES_HOTEL } from "@/lib/demo-data"
-import { Hotel } from "lucide-react"
+import { IconBuildingCastle } from "@tabler/icons-react"
 
 export default function HotelAdmin() {
   const activos = HOSPEDADOS.filter(h => h.status !== "completado")

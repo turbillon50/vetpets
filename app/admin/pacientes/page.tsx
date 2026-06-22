@@ -1,6 +1,6 @@
 "use client"
 import { PACIENTES_ADMIN } from "@/lib/demo-data"
-import { Search, PawPrint } from "lucide-react"
+import { IconSearch, IconPaw } from "@tabler/icons-react"
 
 const statusColor: Record<string,{bg:string,color:string}> = {
   "activo": { bg: "rgba(5,150,105,0.12)", color: "#34D399" },
@@ -14,7 +14,7 @@ export default function PacientesAdmin() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-black text-white">Pacientes</h1>
         <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: "#141414", border: "1px solid rgba(255,255,255,0.08)" }}>
-          <Search size={14} className="text-[#525252]" />
+          <IconSearch size={14} className="text-[#525252]" />
           <input placeholder="Buscar paciente..." className="bg-transparent text-sm text-white outline-none placeholder-[#525252] w-32" />
         </div>
       </div>
@@ -24,7 +24,7 @@ export default function PacientesAdmin() {
             style={{ background: "#141414", border: "1px solid rgba(255,255,255,0.05)" }}>
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(185,28,28,0.1)" }}>
-                <PawPrint size={16} className="text-red-400" />
+                <IconPaw size={16} className="text-red-400" />
               </div>
               <div>
                 <div className="font-bold text-sm text-white">{p.nombre} <span className="text-[#525252] font-normal">— {p.raza}</span></div>

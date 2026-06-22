@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { HABITACIONES_HOTEL, HOSPEDADOS, MASCOTAS } from "@/lib/demo-data"
-import { Hotel, Check, X } from "lucide-react"
+import { IconBuildingCastle, IconCheck, IconX } from "@tabler/icons-react"
 
 export default function HotelPage() {
   const [showModal, setShowModal] = useState(false)
@@ -58,7 +58,7 @@ export default function HotelPage() {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center"
                   style={{ background: h.disponible ? "rgba(5,150,105,0.12)" : "rgba(255,255,255,0.04)" }}>
-                  <Hotel size={18} style={{ color: h.disponible ? "#34D399" : "#525252" }} />
+                  <IconBuildingCastle size={18} style={{ color: h.disponible ? "#34D399" : "#525252" }} />
                 </div>
                 <div>
                   <div className="font-semibold text-sm text-white">{h.nombre}</div>
@@ -85,7 +85,7 @@ export default function HotelPage() {
             style={{ background: "#141414", border: "1px solid rgba(255,255,255,0.08)" }}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-black text-white">Reservar Hotel</h2>
-              <button onClick={() => setShowModal(false)} className="text-[#525252]"><X size={20} /></button>
+              <button onClick={() => setShowModal(false)} className="text-[#525252]"><IconX size={20} /></button>
             </div>
             {["Mascota","Habitación","Check-in","Check-out","Notas especiales"].map(f => (
               <div key={f}>
@@ -108,7 +108,7 @@ export default function HotelPage() {
             <button onClick={() => { setSaved(true); setTimeout(() => { setShowModal(false); setSaved(false) }, 1500) }}
               className="w-full py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 shine-hover"
               style={{ background: "linear-gradient(135deg,#059669,#047857)" }}>
-              {saved ? <><Check size={16} /> ¡Reserva confirmada!</> : "Confirmar reserva"}
+              {saved ? <><IconCheck size={16} /> ¡Reserva confirmada!</> : "Confirmar reserva"}
             </button>
           </motion.div>
         </div>

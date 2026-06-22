@@ -14,6 +14,6 @@ export const useDemoStore = create<DemoStore>()(
       mode: "publico",
       setMode: (mode) => set({ mode }),
     }),
-    { name: "vetpets-demo-mode" }
+    { name: "vp-demo" }
   )
 )

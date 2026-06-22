@@ -1,40 +1,55 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, PawPrint, Calendar, Hotel, GraduationCap, User } from "lucide-react"
+import {
+  IconHome, IconPaw, IconCalendar, IconBuildingCastle,
+  IconDog, IconUser
+} from "@tabler/icons-react"
 
 const NAV = [
-  { href: "/app", label: "Inicio", icon: Home },
-  { href: "/app/mascotas", label: "Mascotas", icon: PawPrint },
-  { href: "/app/citas", label: "Citas", icon: Calendar },
-  { href: "/app/hotel", label: "Hotel", icon: Hotel },
-  { href: "/app/cursos", label: "Cursos", icon: GraduationCap },
-  { href: "/app/perfil", label: "Perfil", icon: User },
+  { href: "/app",           label: "Inicio",    Icon: IconHome },
+  { href: "/app/mascotas",  label: "Mascotas",  Icon: IconPaw },
+  { href: "/app/citas",     label: "Citas",     Icon: IconCalendar },
+  { href: "/app/hotel",     label: "Hotel",     Icon: IconBuildingCastle },
+  { href: "/app/cursos",    label: "Cursos",    Icon: IconDog },
+  { href: "/app/perfil",    label: "Perfil",    Icon: IconUser },
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname()
+
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pb-20 md:pb-0 md:pl-60">
+    <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
       {/* Sidebar desktop */}
-      <aside className="hidden md:flex fixed left-0 top-0 h-full w-60 flex-col py-6 px-4"
-        style={{ background: "#0D0D0D", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="flex items-center gap-3 mb-10 px-2">
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-white"
-            style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)" }}>V</div>
+      <aside style={{
+        display: "none",
+        position: "fixed", left: 0, top: 0, height: "100%", width: 220,
+        background: "var(--void)", borderRight: "1px solid var(--border)",
+        flexDirection: "column", padding: "24px 12px",
+        // show on md+
+      }} className="md-sidebar">
+        <style>{`.md-sidebar { @media(min-width:768px){display:flex!important} }`}</style>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "0 8px", marginBottom: 36 }}>
+          <img src="/images/app-icon.png" alt="logo" style={{ width: 32, height: 32, borderRadius: 10 }} />
           <div>
-            <div className="text-sm font-bold text-white">Vet & Pets</div>
-            <div className="text-[10px] text-[#A3A3A3]">Sofía Ramírez</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--txt)" }}>Vet & Pets</div>
+            <div style={{ fontSize: 10, color: "var(--txt3)" }}>Sofía Ramírez</div>
           </div>
         </div>
-        <nav className="flex flex-col gap-1">
-          {NAV.map(({ href, label, icon: Icon }) => {
+        <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {NAV.map(({ href, label, Icon }) => {
             const active = path === href
             return (
-              <Link key={href} href={href}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all"
-                style={active ? { background: "rgba(185,28,28,0.15)", color: "#EF4444", border: "1px solid rgba(185,28,28,0.2)" } : { color: "#A3A3A3" }}>
-                <Icon size={18} />{label}
+              <Link key={href} href={href} style={{
+                display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
+                borderRadius: 12, textDecoration: "none", fontSize: 13, fontWeight: 500,
+                transition: "all 0.2s ease",
+                ...(active
+                  ? { background: "rgba(185,28,28,0.12)", color: "#f87171", border: "1px solid rgba(185,28,28,0.2)" }
+                  : { color: "var(--txt3)", border: "1px solid transparent" }),
+              }}>
+                <Icon size={17} stroke={active ? 2 : 1.5} />
+                {label}
               </Link>
             )
           })}
@@ -42,27 +57,45 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Header mobile */}
-      <header className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 h-14"
-        style={{ background: "rgba(10,10,10,0.9)", borderBottom: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(12px)" }}>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-sm"
-            style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)" }}>V</div>
-          <span className="text-sm font-bold text-white">Vet & Pets</span>
+      <header style={{
+        position: "sticky", top: 0, zIndex: 30,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "0 16px", height: 54,
+        background: "rgba(8,6,16,0.92)", borderBottom: "1px solid var(--border)",
+        backdropFilter: "blur(16px)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <img src="/images/app-icon.png" alt="logo" style={{ width: 30, height: 30, borderRadius: 8 }} />
+          <span style={{ fontSize: 13, fontWeight: 700, color: "var(--txt)" }}>Vet & Pets</span>
         </div>
-        <Link href="/app/perfil" className="w-8 h-8 rounded-full bg-red-700 flex items-center justify-center text-white text-xs font-bold">SR</Link>
+        <div style={{
+          width: 32, height: 32, borderRadius: "50%",
+          background: "linear-gradient(135deg, var(--red-2), var(--red))",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 12, fontWeight: 700, color: "var(--txt)",
+        }}>SR</div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-6">{children}</main>
+      <main style={{ padding: "20px 16px", maxWidth: 680, margin: "0 auto", paddingBottom: 100 }}>
+        {children}
+      </main>
 
       {/* Bottom nav mobile */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 grid grid-cols-5 h-16"
-        style={{ background: "rgba(10,10,10,0.95)", borderTop: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(20px)" }}>
-        {NAV.slice(0, 5).map(({ href, label, icon: Icon }) => {
+      <nav style={{
+        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 30,
+        display: "grid", gridTemplateColumns: "repeat(5,1fr)", height: 64,
+        background: "rgba(8,6,16,0.96)", borderTop: "1px solid var(--border)",
+        backdropFilter: "blur(24px)",
+      }}>
+        {NAV.slice(0, 5).map(({ href, label, Icon }) => {
           const active = path === href
           return (
-            <Link key={href} href={href} className="flex flex-col items-center justify-center gap-0.5">
-              <Icon size={20} style={{ color: active ? "#EF4444" : "#525252" }} />
-              <span className="text-[9px]" style={{ color: active ? "#EF4444" : "#525252" }}>{label}</span>
+            <Link key={href} href={href} style={{
+              display: "flex", flexDirection: "column", alignItems: "center",
+              justifyContent: "center", gap: 3, textDecoration: "none",
+            }}>
+              <Icon size={20} stroke={active ? 2 : 1.5} style={{ color: active ? "#f87171" : "var(--txt3)" }} />
+              <span style={{ fontSize: 9, color: active ? "#f87171" : "var(--txt3)", fontWeight: active ? 600 : 400 }}>{label}</span>
             </Link>
           )
         })}

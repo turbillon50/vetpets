@@ -2,226 +2,312 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Phone, MapPin, Clock, Star, ChevronRight, Stethoscope, GraduationCap, Hotel, Shield, Heart, Award } from "lucide-react"
+import Image from "next/image"
 import { CLINICA_INFO, CURSOS } from "@/lib/demo-data"
+import {
+  IconHeartbeat, IconDog, IconBuildingCastle, IconPhone,
+  IconMapPin, IconChevronRight, IconStar, IconCertificate,
+  IconShieldCheck, IconArrowRight
+} from "@tabler/icons-react"
 
-const fadeUp = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }
-const stagger = { show: { transition: { staggerChildren: 0.1 } } }
+const riseIn = { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
+const container = { animate: { transition: { staggerChildren: 0.09 } } }
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
+    <div style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "hidden" }}>
+
       {/* ── NAV ── */}
-      <nav className="fixed top-0 w-full z-40" style={{ background: "rgba(10,10,10,0.85)", borderBottom: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(20px)" }}>
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-white text-lg" style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)" }}>
-              V
-            </div>
+      <nav style={{
+        position: "fixed", top: 0, width: "100%", zIndex: 40,
+        background: "rgba(8,6,16,0.88)",
+        borderBottom: "1px solid var(--border)",
+        backdropFilter: "blur(20px)",
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 20px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <img src="/images/app-icon.png" alt="logo" style={{ width: 36, height: 36, borderRadius: 10 }} />
             <div>
-              <div className="font-bold text-white text-sm leading-tight">Vet & Pets Care</div>
-              <div className="text-[10px] text-[#A3A3A3]">Apan, Hidalgo</div>
+              <div style={{ fontWeight: 700, color: "var(--txt)", fontSize: 14, lineHeight: 1.2 }}>Vet & Pets Care</div>
+              <div style={{ fontSize: 10, color: "var(--txt3)", letterSpacing: ".05em" }}>Apan, Hidalgo</div>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#servicios" className="text-sm text-[#A3A3A3] hover:text-white transition-colors">Servicios</a>
-            <a href="#cursos" className="text-sm text-[#A3A3A3] hover:text-white transition-colors">Instituto K9</a>
-            <a href="#hotel" className="text-sm text-[#A3A3A3] hover:text-white transition-colors">Hotel</a>
-            <Link href="/sign-in" className="text-sm px-4 py-2 rounded-lg font-semibold transition-all" style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)", color: "white" }}>
-              Portal Cliente
+          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            <a href="#servicios" style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}>Servicios</a>
+            <a href="#k9" style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}>Instituto K9</a>
+            <a href="#hotel" style={{ fontSize: 13, color: "var(--txt2)", textDecoration: "none" }}>Hotel</a>
+            <Link href="/sign-in" style={{
+              fontSize: 13, fontWeight: 600, color: "var(--txt)",
+              padding: "8px 18px", borderRadius: 99,
+              background: "linear-gradient(135deg, var(--red-2), var(--red))",
+              textDecoration: "none",
+              boxShadow: "0 0 0 0 var(--red-glow)",
+              animation: "glowPulse 2.5s ease-in-out infinite",
+            }}>
+              Entrar
             </Link>
           </div>
-          <Link href="/sign-in" className="md:hidden text-sm px-3 py-1.5 rounded-lg font-semibold text-white" style={{ background: "#B91C1C" }}>
-            Entrar
-          </Link>
         </div>
       </nav>
 
       {/* ── HERO ── */}
-      <section className="relative pt-16 min-h-screen flex items-center overflow-hidden">
-        {/* BG gradient */}
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(185,28,28,0.12) 0%, transparent 70%)" }} />
-        <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center" }}>
+        {/* Imagen hero de Higgsfield */}
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+          <Image src="/images/hero-clinica.jpg" alt="Clínica Vet & Pets Care" fill
+            style={{ objectFit: "cover", objectPosition: "center 30%" }}
+            priority />
+          {/* Overlay gradiente obsidiana */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(to right, rgba(8,6,16,0.92) 0%, rgba(8,6,16,0.75) 50%, rgba(8,6,16,0.4) 100%)",
+          }} />
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(to top, rgba(8,6,16,0.9) 0%, transparent 60%)",
+          }} />
+        </div>
 
-        <div className="relative max-w-6xl mx-auto px-4 py-24 text-center">
-          {/* Badge */}
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8"
-            style={{ background: "rgba(217,119,6,0.12)", border: "1px solid rgba(217,119,6,0.3)", color: "#FCD34D" }}>
-            <Award size={14} />
-            {CLINICA_INFO.anios} Años de Experiencia · ⭐⭐⭐⭐⭐
-          </motion.div>
+        <div style={{ position: "relative", maxWidth: 1100, margin: "0 auto", padding: "100px 20px 60px", width: "100%" }}>
+          <motion.div initial="initial" animate="animate" variants={container}
+            style={{ maxWidth: 600 }}>
 
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-white mb-4 leading-tight">
-            Clínica Veterinaria
-            <br />
-            <span className="text-gold-gradient">Vet & Pets Care</span>
-          </motion.h1>
+            {/* Badge */}
+            <motion.div variants={riseIn} style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              background: "rgba(155,28,28,0.18)",
+              border: "1px solid rgba(185,28,28,0.3)",
+              borderRadius: 99, padding: "6px 14px", marginBottom: 24,
+            }}>
+              <IconCertificate size={13} stroke={2} style={{ color: "var(--red-2)" }} />
+              <span style={{ fontSize: 11, fontWeight: 600, color: "#f87171", letterSpacing: ".06em" }}>
+                20 AÑOS DE EXPERIENCIA
+              </span>
+              <div style={{ display: "flex", gap: 1 }}>
+                {[...Array(5)].map((_, i) => (
+                  <IconStar key={i} size={9} stroke={2} style={{ color: "#f59e0b", fill: "#f59e0b" }} />
+                ))}
+              </div>
+            </motion.div>
 
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-lg md:text-xl text-[#A3A3A3] mb-4 max-w-2xl mx-auto">
-            {CLINICA_INFO.slogan}
-          </motion.p>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base text-[#D97706] font-semibold mb-10">
-            {CLINICA_INFO.subslogan}
-          </motion.p>
+            <motion.h1 variants={riseIn} style={{
+              fontSize: "clamp(36px,6vw,72px)", fontWeight: 800,
+              color: "var(--txt)", lineHeight: 1.05,
+              letterSpacing: "-2px", marginBottom: 16,
+            }}>
+              Clínica Veterinaria<br />
+              <span style={{
+                background: "linear-gradient(135deg, var(--red-2), #f87171)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>
+                Vet & Pets Care
+              </span>
+            </motion.h1>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link href="/sign-in"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold text-white transition-all shine-hover"
-              style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)", boxShadow: "0 0 30px rgba(185,28,28,0.3)" }}>
-              <Heart size={18} /> Agenda tu Cita
-            </Link>
-            <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold transition-all"
-              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#F5F5F5" }}>
-              <Phone size={18} /> {CLINICA_INFO.telefono}
-            </a>
-          </motion.div>
+            <motion.p variants={riseIn} style={{
+              fontSize: 18, color: "var(--txt2)", lineHeight: 1.6,
+              marginBottom: 10, maxWidth: 520,
+            }}>
+              Servicio Médico Veterinario en pequeñas y grandes especies.
+            </motion.p>
+            <motion.p variants={riseIn} style={{
+              fontSize: 15, color: "var(--txt3)", marginBottom: 36,
+            }}>
+              Estética Canina · Hotel Campestre · Instituto K9 Country Club
+            </motion.p>
 
-          {/* Stats */}
-          <motion.div initial="hidden" animate="show" variants={stagger}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {[
-              { val: "20+", label: "Años de experiencia" },
-              { val: "3", label: "Servicios especializados" },
-              { val: "500+", label: "Pacientes activos" },
-              { val: "100%", label: "Amor y respeto" },
-            ].map((s) => (
-              <motion.div key={s.label} variants={fadeUp} className="glass-card rounded-xl p-4 text-center">
-                <div className="text-2xl font-black text-red-gradient mb-1">{s.val}</div>
-                <div className="text-xs text-[#A3A3A3]">{s.label}</div>
-              </motion.div>
-            ))}
+            <motion.div variants={riseIn} style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link href="/sign-in" style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "linear-gradient(135deg, var(--red-2), var(--red))",
+                color: "var(--txt)", fontWeight: 700, fontSize: 15,
+                padding: "14px 28px", borderRadius: 14, textDecoration: "none",
+                boxShadow: "0 4px 24px var(--red-glow)",
+              }}>
+                <IconHeartbeat size={18} stroke={2} /> Agenda tu cita
+              </Link>
+              <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`} style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid var(--border)",
+                color: "var(--txt2)", fontWeight: 600, fontSize: 15,
+                padding: "14px 28px", borderRadius: 14, textDecoration: "none",
+              }}>
+                <IconPhone size={18} stroke={2} /> {CLINICA_INFO.telefono}
+              </a>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div variants={riseIn} style={{
+              display: "flex", gap: 24, marginTop: 48, flexWrap: "wrap",
+            }}>
+              {[
+                { v: "20+", l: "Años" }, { v: "500+", l: "Pacientes" },
+                { v: "3", l: "Servicios" }, { v: "100%", l: "Dedicación" },
+              ].map(s => (
+                <div key={s.l}>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>{s.v}</div>
+                  <div style={{ fontSize: 11, color: "var(--txt3)", letterSpacing: ".08em", textTransform: "uppercase" }}>{s.l}</div>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* ── SERVICIOS ── */}
-      <section id="servicios" className="py-24 max-w-6xl mx-auto px-4">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
-          <motion.div variants={fadeUp} className="text-center mb-16">
-            <div className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-4 uppercase tracking-widest"
-              style={{ background: "rgba(185,28,28,0.1)", border: "1px solid rgba(185,28,28,0.2)", color: "#EF4444" }}>
-              Nuestros Servicios
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white">Todo para tu mascota<br /><span className="text-gold-gradient">en un solo lugar</span></h2>
+      <section id="servicios" style={{ padding: "100px 20px", maxWidth: 1100, margin: "0 auto" }}>
+        <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={container}>
+          <motion.div variants={riseIn} style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{
+              display: "inline-block", fontSize: 10, fontWeight: 700,
+              color: "var(--red-2)", letterSpacing: ".14em", textTransform: "uppercase",
+              marginBottom: 12,
+            }}>Nuestros Servicios</div>
+            <h2 style={{
+              fontSize: "clamp(28px,4vw,48px)", fontWeight: 800, color: "var(--txt)",
+              letterSpacing: "-1.5px", lineHeight: 1.1,
+            }}>
+              Todo para tu mascota<br />
+              <span style={{ color: "var(--txt2)", fontWeight: 400 }}>en un solo lugar</span>
+            </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Clínica */}
-            <motion.div variants={fadeUp} className="glass-card rounded-2xl p-8 group hover:border-red-700 transition-all duration-300 shine-hover"
-              style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-                style={{ background: "linear-gradient(135deg,rgba(185,28,28,0.3),rgba(127,29,29,0.2))", border: "1px solid rgba(185,28,28,0.3)" }}>
-                <Stethoscope size={28} className="text-red-400" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">Clínica Veterinaria</h3>
-              <p className="text-[#A3A3A3] text-sm mb-6 leading-relaxed">Medicina veterinaria para pequeñas y grandes especies. Consultas, cirugías, vacunación, hospitalización y más.</p>
-              <ul className="space-y-2 mb-6">
-                {["Consultas generales y especialidades", "Vacunación y desparasitación", "Cirugías y procedimientos", "Hospitalización 24h", "Expediente clínico digital"].map(s => (
-                  <li key={s} className="flex items-center gap-2 text-xs text-[#A3A3A3]">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />{s}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/sign-in" className="flex items-center gap-1 text-sm font-semibold text-red-400 hover:text-red-300 transition-colors">
-                Ver expediente <ChevronRight size={16} />
-              </Link>
-            </motion.div>
-
-            {/* Instituto */}
-            <motion.div variants={fadeUp} className="glass-card rounded-2xl p-8 group hover:border-yellow-700 transition-all duration-300 shine-hover"
-              style={{ border: "1px solid rgba(217,119,6,0.2)", background: "rgba(217,119,6,0.04)" }}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-                style={{ background: "linear-gradient(135deg,rgba(217,119,6,0.3),rgba(180,83,9,0.2))", border: "1px solid rgba(217,119,6,0.4)" }}>
-                <GraduationCap size={28} className="text-yellow-400" />
-              </div>
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold mb-4 uppercase tracking-widest"
-                style={{ background: "rgba(217,119,6,0.2)", color: "#FCD34D" }}>
-                Instituto K9 · Country Club
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">Centro de Adiestramiento</h3>
-              <p className="text-[#A3A3A3] text-sm mb-6 leading-relaxed">Formación canina con amor y respeto. Desde estimulación temprana hasta especialización en protección.</p>
-              <ul className="space-y-2 mb-6">
-                {["Estimulación temprana", "Obediencia básica y avanzada", "Protección N1, N2 y Especialización", "Detección de aromas", "Instalaciones campestres"].map(s => (
-                  <li key={s} className="flex items-center gap-2 text-xs text-[#A3A3A3]">
-                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 shrink-0" />{s}
-                  </li>
-                ))}
-              </ul>
-              <a href="#cursos" className="flex items-center gap-1 text-sm font-semibold text-yellow-400 hover:text-yellow-300 transition-colors">
-                Ver cursos <ChevronRight size={16} />
-              </a>
-            </motion.div>
-
-            {/* Hotel */}
-            <motion.div variants={fadeUp} className="glass-card rounded-2xl p-8 group hover:border-emerald-700 transition-all duration-300 shine-hover"
-              style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-                style={{ background: "linear-gradient(135deg,rgba(5,150,105,0.3),rgba(4,120,87,0.2))", border: "1px solid rgba(5,150,105,0.3)" }}>
-                <Hotel size={28} className="text-emerald-400" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">Hotel Campestre</h3>
-              <p className="text-[#A3A3A3] text-sm mb-6 leading-relaxed">Tu perro merece unas vacaciones también. Instalaciones campestres con espacio, cuidado y cariño en Apan, Hidalgo.</p>
-              <ul className="space-y-2 mb-6">
-                {["Suites premium y cabañas", "Supervisión veterinaria", "Ejercicio y juego diario", "Alimentación personalizada", "Reportes diarios a WhatsApp"].map(s => (
-                  <li key={s} className="flex items-center gap-2 text-xs text-[#A3A3A3]">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />{s}
-                  </li>
-                ))}
-              </ul>
-              <a href="#hotel" className="flex items-center gap-1 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
-                Ver disponibilidad <ChevronRight size={16} />
-              </a>
-            </motion.div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 20 }}>
+            {[
+              {
+                Icon: IconHeartbeat, label: "Clínica Veterinaria",
+                desc: "Medicina veterinaria para pequeñas y grandes especies. Consultas, cirugías, vacunación, hospitalización.",
+                items: ["Consultas generales y especialidades", "Vacunación y desparasitación", "Cirugías y hospitalizaciones", "Expediente clínico digital"],
+                color: "var(--red-2)", href: "/app",
+              },
+              {
+                Icon: IconDog, label: "Instituto K9",
+                desc: "Centro de adiestramiento canino con amor y respeto. Instalaciones campestres en Apan, Hidalgo.",
+                items: ["Estimulación temprana", "Obediencia básica y avanzada", "Protección N1, N2 y Especialización", "Detección de aromas"],
+                color: "var(--silver)", href: "#k9",
+              },
+              {
+                Icon: IconBuildingCastle, label: "Hotel Campestre",
+                desc: "Tu perro merece vacaciones. Instalaciones premium con supervisión veterinaria.",
+                items: ["Suites y cabañas campestres", "Supervisión veterinaria diaria", "Ejercicio y socialización", "Reporte diario por WhatsApp"],
+                color: "var(--green)", href: "#hotel",
+              },
+            ].map(({ Icon, label, desc, items, color, href }, i) => (
+              <motion.div key={label} variants={riseIn}
+                style={{
+                  background: "var(--card)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 20, padding: 28,
+                  transition: "all 0.3s cubic-bezier(.22,1,.36,1)",
+                  cursor: "pointer",
+                }}
+                whileHover={{ y: -4, borderColor: color }}>
+                <div style={{
+                  width: 48, height: 48, borderRadius: 14, display: "flex",
+                  alignItems: "center", justifyContent: "center", marginBottom: 20,
+                  background: `${color}18`,
+                  border: `1px solid ${color}30`,
+                }}>
+                  <Icon size={24} stroke={1.5} style={{ color }} />
+                </div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: "var(--txt)", marginBottom: 10 }}>{label}</h3>
+                <p style={{ fontSize: 13, color: "var(--txt2)", lineHeight: 1.6, marginBottom: 20 }}>{desc}</p>
+                <ul style={{ listStyle: "none", padding: 0, marginBottom: 24, display: "flex", flexDirection: "column", gap: 8 }}>
+                  {items.map(item => (
+                    <li key={item} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--txt3)" }}>
+                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Link href={href} style={{
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                  fontSize: 12, fontWeight: 600, color,
+                  textDecoration: "none",
+                }}>
+                  Ver más <IconChevronRight size={14} stroke={2} />
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </section>
 
-      {/* ── CURSOS K9 ── */}
-      <section id="cursos" className="py-24" style={{ background: "rgba(217,119,6,0.03)", borderTop: "1px solid rgba(217,119,6,0.1)", borderBottom: "1px solid rgba(217,119,6,0.1)" }}>
-        <div className="max-w-6xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
-            <motion.div variants={fadeUp} className="text-center mb-16">
-              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-4 uppercase tracking-widest"
-                style={{ background: "rgba(217,119,6,0.1)", border: "1px solid rgba(217,119,6,0.25)", color: "#D97706" }}>
-                Instituto K9 · Country Club
-              </div>
-              <h2 className="text-3xl md:text-5xl font-black text-white mb-4">Formación Canina<br /><span className="text-gold-gradient">con Amor y Respeto</span></h2>
-              <p className="text-[#A3A3A3] max-w-2xl mx-auto">Instalaciones campestres en Apan, Hidalgo. Cursos diseñados para cada etapa de vida de tu perro.</p>
-            </motion.div>
+      {/* ── INSTITUTO K9 ── */}
+      <section id="k9" style={{
+        padding: "100px 20px",
+        background: "var(--surface)",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={container}>
 
-            <div className="grid md:grid-cols-3 gap-5">
-              {CURSOS.map((curso, i) => (
-                <motion.div key={curso.id} variants={fadeUp}
-                  className="rounded-2xl p-6 flex flex-col shine-hover"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(217,119,6,0.15)" }}>
-                  <div className="flex items-start justify-between mb-4">
+            {/* Hero K9 */}
+            <div style={{ borderRadius: 24, overflow: "hidden", marginBottom: 64, position: "relative", height: 400 }}>
+              <Image src="/images/hero-k9.jpg" alt="Instituto K9 Country Club" fill
+                style={{ objectFit: "cover", objectPosition: "center 40%" }} />
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to right, rgba(8,6,16,0.85), transparent 60%)",
+              }} />
+              <div style={{ position: "absolute", left: 40, top: "50%", transform: "translateY(-50%)" }}>
+                <div style={{ fontSize: 11, color: "var(--silver)", fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", marginBottom: 12 }}>
+                  Instituto K9 · Country Club
+                </div>
+                <h2 style={{
+                  fontSize: "clamp(24px,4vw,44px)", fontWeight: 800, color: "var(--txt)",
+                  letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 12,
+                }}>
+                  Formación canina<br />con amor y respeto
+                </h2>
+                <div style={{ fontSize: 14, color: "var(--txt3)" }}>
+                  Instalaciones campestres · Apan, Hidalgo
+                </div>
+              </div>
+            </div>
+
+            {/* Cursos */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
+              {CURSOS.map((c, i) => (
+                <motion.div key={c.id} variants={riseIn}
+                  style={{
+                    background: "var(--card)", border: "1px solid var(--border)",
+                    borderRadius: 16, padding: 24,
+                    transition: "all 0.25s ease",
+                  }}
+                  whileHover={{ borderColor: "var(--silver)", y: -2 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                     <div>
-                      <div className="text-[10px] font-bold uppercase tracking-widest mb-1 text-[#D97706]">{curso.nivel}</div>
-                      <h3 className="text-base font-bold text-white">{curso.nombre}</h3>
-                      <p className="text-xs text-[#A3A3A3] mt-0.5">{curso.subtitulo}</p>
+                      <div style={{
+                        display: "inline-block", fontSize: 9, fontWeight: 700,
+                        letterSpacing: ".1em", textTransform: "uppercase",
+                        padding: "3px 8px", borderRadius: 4, marginBottom: 8,
+                        background: "rgba(200,205,216,0.1)", color: "var(--silver)",
+                      }}>{c.nivel}</div>
+                      <h3 style={{ fontSize: 15, fontWeight: 700, color: "var(--txt)", lineHeight: 1.2 }}>{c.nombre}</h3>
+                      <p style={{ fontSize: 11, color: "var(--txt3)", marginTop: 2 }}>{c.subtitulo}</p>
                     </div>
-                    <div className="text-right shrink-0 ml-3">
-                      <div className="text-xl font-black text-gold-gradient">${curso.precio.toLocaleString()}</div>
-                      <div className="text-[10px] text-[#A3A3A3]">MXN</div>
+                    <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
+                      <div style={{ fontSize: 22, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>
+                        ${c.precio.toLocaleString()}
+                      </div>
+                      <div style={{ fontSize: 9, color: "var(--txt3)", textTransform: "uppercase" }}>MXN</div>
                     </div>
                   </div>
-                  <p className="text-xs text-[#A3A3A3] leading-relaxed mb-4">{curso.descripcion}</p>
-                  <div className="mt-auto">
-                    <div className="text-[10px] text-[#A3A3A3] mb-2 font-semibold uppercase tracking-wider">Requisito:</div>
-                    <div className="text-xs text-[#D97706]">{curso.requisitos}</div>
-                    <div className="flex items-center gap-3 mt-4 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                      <div className="text-[10px] text-[#A3A3A3]">{curso.duracion} · {curso.sesiones}</div>
-                      <div className="ml-auto flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                        style={{ background: "rgba(5,150,105,0.15)", color: "#34D399" }}>
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        {curso.alumnos_activos} alumnos
-                      </div>
+                  <p style={{ fontSize: 12, color: "var(--txt2)", lineHeight: 1.6, marginBottom: 16 }}>{c.descripcion}</p>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ fontSize: 10, color: "var(--txt3)" }}>{c.duracion} · {c.sesiones}</div>
+                    <div style={{
+                      display: "inline-flex", alignItems: "center", gap: 4,
+                      fontSize: 10, fontWeight: 600,
+                      background: "var(--green-dim)", color: "var(--green)",
+                      padding: "3px 8px", borderRadius: 99,
+                    }}>
+                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--green)" }} />
+                      {c.alumnos_activos} alumnos
                     </div>
                   </div>
                 </motion.div>
@@ -232,91 +318,114 @@ export default function Home() {
       </section>
 
       {/* ── HOTEL ── */}
-      <section id="hotel" className="py-24 max-w-6xl mx-auto px-4">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
-          <motion.div variants={fadeUp} className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-6 uppercase tracking-widest"
-                style={{ background: "rgba(5,150,105,0.1)", border: "1px solid rgba(5,150,105,0.25)", color: "#34D399" }}>
-                Hotel Campestre
-              </div>
-              <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Tu perro, <span className="text-gold-gradient">en las mejores manos</span></h2>
-              <p className="text-[#A3A3A3] leading-relaxed mb-8">Instalaciones campestres en Apan, Hidalgo. Mientras tú estás de viaje, tu mejor amigo disfruta de espacio, ejercicio, cuidado veterinario y mucho amor.</p>
-              <div className="grid grid-cols-2 gap-4 mb-8">
+      <section id="hotel" style={{ padding: "100px 20px", maxWidth: 1100, margin: "0 auto" }}>
+        <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={container}>
+          <motion.div variants={riseIn} style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "var(--green)", letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 12 }}>
+              Hotel Campestre
+            </div>
+            <h2 style={{ fontSize: "clamp(28px,4vw,48px)", fontWeight: 800, color: "var(--txt)", letterSpacing: "-1.5px" }}>
+              Tu perro,{" "}
+              <span style={{ color: "var(--txt3)", fontWeight: 400 }}>en las mejores manos</span>
+            </h2>
+          </motion.div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, alignItems: "center" }}>
+            <motion.div variants={riseIn}>
+              <p style={{ fontSize: 15, color: "var(--txt2)", lineHeight: 1.7, marginBottom: 32 }}>
+                Instalaciones campestres en Apan, Hidalgo. Mientras tú estás de viaje, tu mejor amigo disfruta de espacio, ejercicio, cuidado veterinario y mucho amor.
+              </p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 32 }}>
                 {[
-                  { icon: "🏡", title: "Suites y Cabañas", desc: "Espacios amplios y confortables" },
-                  { icon: "🩺", title: "Vet en sitio", desc: "Supervisión médica incluida" },
-                  { icon: "📱", title: "Reportes diarios", desc: "Fotos y videos por WhatsApp" },
-                  { icon: "🌿", title: "Áreas verdes", desc: "Ejercicio y juego al aire libre" },
+                  { e: "🏡", t: "Suites y Cabañas", d: "Espacios amplios" },
+                  { e: "🩺", t: "Vet en sitio", d: "Supervisión médica" },
+                  { e: "📱", t: "Reportes diarios", d: "Fotos por WhatsApp" },
+                  { e: "🌿", t: "Áreas verdes", d: "Juego al aire libre" },
                 ].map(f => (
-                  <div key={f.title} className="glass-card rounded-xl p-4">
-                    <div className="text-2xl mb-2">{f.icon}</div>
-                    <div className="text-sm font-semibold text-white mb-1">{f.title}</div>
-                    <div className="text-xs text-[#A3A3A3]">{f.desc}</div>
+                  <div key={f.t} style={{
+                    background: "var(--card)", border: "1px solid var(--border)",
+                    borderRadius: 14, padding: 16,
+                  }}>
+                    <div style={{ fontSize: 24, marginBottom: 8 }}>{f.e}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: "var(--txt)", marginBottom: 2 }}>{f.t}</div>
+                    <div style={{ fontSize: 11, color: "var(--txt3)" }}>{f.d}</div>
                   </div>
                 ))}
               </div>
-              <Link href="/sign-in" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-[#0A0A0A] transition-all shine-hover"
-                style={{ background: "linear-gradient(135deg,#D97706,#FCD34D)" }}>
-                Reservar Hotel <ChevronRight size={18} />
+              <Link href="/app/hotel" style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "var(--green-dim)", border: "1px solid rgba(16,217,164,0.2)",
+                color: "var(--green)", fontWeight: 700, fontSize: 14,
+                padding: "12px 24px", borderRadius: 12, textDecoration: "none",
+              }}>
+                Reservar hotel <IconArrowRight size={16} stroke={2} />
               </Link>
-            </div>
-            <div className="glass-card rounded-2xl p-8">
-              <h3 className="text-lg font-bold text-white mb-6">Tarifas Hotel Campestre</h3>
+            </motion.div>
+
+            <motion.div variants={riseIn} style={{
+              background: "var(--card)", border: "1px solid var(--border)",
+              borderRadius: 20, padding: 28,
+            }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--txt)", marginBottom: 24 }}>Tarifas Hotel Campestre</h3>
               {[
-                { tipo: "Suite Bosque", desc: "Perros grandes · Espacio premium", precio: 380 },
-                { tipo: "Cabaña Campo (mediano)", desc: "Perros medianos · Área propia", precio: 320 },
-                { tipo: "Cabaña Campo (pequeño)", desc: "Perros pequeños · Acogedor", precio: 280 },
-              ].map(h => (
-                <div key={h.tipo} className="flex items-center justify-between py-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                { t: "Suite Bosque", d: "Perros grandes", p: 380 },
+                { t: "Cabaña Campo — Mediano", d: "Perros medianos", p: 320 },
+                { t: "Cabaña Campo — Pequeño", d: "Perros pequeños", p: 280 },
+              ].map((h, i) => (
+                <div key={h.t} style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  padding: "16px 0",
+                  borderBottom: i < 2 ? "1px solid var(--border)" : "none",
+                }}>
                   <div>
-                    <div className="text-sm font-semibold text-white">{h.tipo}</div>
-                    <div className="text-xs text-[#A3A3A3]">{h.desc}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: "var(--txt)" }}>{h.t}</div>
+                    <div style={{ fontSize: 11, color: "var(--txt3)" }}>{h.d}</div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-lg font-black text-gold-gradient">${h.precio}</div>
-                    <div className="text-[10px] text-[#A3A3A3]">MXN/día</div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: "var(--txt)", letterSpacing: "-1px" }}>${h.p}</div>
+                    <div style={{ fontSize: 9, color: "var(--txt3)", textTransform: "uppercase" }}>MXN / día</div>
                   </div>
                 </div>
               ))}
-              <div className="mt-6 p-4 rounded-xl" style={{ background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)" }}>
-                <div className="text-xs text-emerald-400 font-semibold mb-1">✓ Incluye en todos los planes:</div>
-                <div className="text-xs text-[#A3A3A3]">Alimentación · Ejercicio · Supervisión veterinaria · Reporte diario por WhatsApp</div>
+              <div style={{
+                marginTop: 20, padding: 14, borderRadius: 12,
+                background: "var(--green-dim)",
+                border: "1px solid rgba(16,217,164,0.15)",
+              }}>
+                <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4 }}>
+                  <IconShieldCheck size={14} stroke={2} style={{ color: "var(--green)" }} />
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--green)" }}>Incluye en todos los planes</span>
+                </div>
+                <div style={{ fontSize: 11, color: "var(--txt3)", lineHeight: 1.6 }}>
+                  Alimentación · Ejercicio · Supervisión veterinaria · Reporte diario
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
 
-      {/* ── CTA FINAL ── */}
-      <section className="py-24" style={{ background: "linear-gradient(135deg,rgba(185,28,28,0.08),rgba(217,119,6,0.06))", borderTop: "1px solid rgba(185,28,28,0.15)" }}>
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-black text-white mb-6">
-              ¿Listo para dar lo mejor<br /><span className="text-gold-gradient">a tu mascota?</span>
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-[#A3A3A3] mb-10 text-lg">
-              Agenda tu cita, reserva el hotel o inscribe a tu perro en el instituto.<br />Llevamos 20 años cuidando a las mascotas de las familias de Hidalgo.
-            </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/sign-in" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold text-white shine-hover"
-                style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)", boxShadow: "0 0 30px rgba(185,28,28,0.3)" }}>
-                <Heart size={18} /> Crear mi cuenta
-              </Link>
-              <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`} className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold"
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#F5F5F5" }}>
-                <Phone size={18} /> WhatsApp
-              </a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* ── FOOTER ── */}
-      <footer className="py-10 text-center" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="text-sm text-[#A3A3A3]">{CLINICA_INFO.nombre} · {CLINICA_INFO.ubicacion} · {CLINICA_INFO.horario}</div>
-        <div className="text-xs text-[#525252] mt-2">© 2026 Todos los derechos reservados</div>
+      <footer style={{
+        padding: "32px 20px", textAlign: "center",
+        borderTop: "1px solid var(--border)",
+        background: "var(--void)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
+          <img src="/images/app-icon.png" alt="logo" style={{ width: 24, height: 24, borderRadius: 6 }} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--txt2)" }}>Vet & Pets Care</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "var(--txt3)" }}>
+            <IconMapPin size={12} stroke={2} /> {CLINICA_INFO.ubicacion}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "var(--txt3)" }}>
+            <IconPhone size={12} stroke={2} /> {CLINICA_INFO.telefono}
+          </div>
+        </div>
+        <div style={{ fontSize: 10, color: "var(--txt3)", marginTop: 12 }}>© 2026 · vetpets.store</div>
       </footer>
+
     </div>
   )
 }

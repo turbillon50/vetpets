@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { MASCOTAS, EXPEDIENTE, VACUNAS } from "@/lib/demo-data"
-import { Syringe, FileText, ChevronDown, ChevronUp } from "lucide-react"
+import { IconVaccine, IconFileText, IconChevronDown, IconChevronUp } from "@tabler/icons-react"
 
 export default function MascotasPage() {
   const [selected, setSelected] = useState(MASCOTAS[0].id)
@@ -74,7 +74,7 @@ export default function MascotasPage() {
             style={tab === t
               ? { background: "rgba(185,28,28,0.15)", color: "#EF4444", border: "1px solid rgba(185,28,28,0.3)" }
               : { color: "#A3A3A3", border: "1px solid transparent" }}>
-            {t === "expediente" ? <FileText size={16} /> : <Syringe size={16} />}
+            {t === "expediente" ? <IconFileText size={16} /> : <IconVaccine size={16} />}
             {t === "expediente" ? "Expediente" : "Vacunas"}
           </button>
         ))}
@@ -114,7 +114,7 @@ export default function MascotasPage() {
               style={{ background: "#141414", border: "1px solid rgba(255,255,255,0.06)" }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(5,150,105,0.12)" }}>
-                  <Syringe size={18} className="text-emerald-400" />
+                  <IconVaccine size={18} className="text-emerald-400" />
                 </div>
                 <div>
                   <div className="font-semibold text-white text-sm">{v.nombre}</div>

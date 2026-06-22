@@ -1,6 +1,6 @@
 "use client"
 import { INVENTARIO } from "@/lib/demo-data"
-import { Package, AlertCircle } from "lucide-react"
+import { IconPackage, IconAlertCircle } from "@tabler/icons-react"
 
 export default function InventarioAdmin() {
   return (
@@ -15,7 +15,7 @@ export default function InventarioAdmin() {
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center"
                   style={{ background: bajo ? "rgba(239,68,68,0.1)" : "rgba(185,28,28,0.08)" }}>
-                  {bajo ? <AlertCircle size={16} className="text-red-400" /> : <Package size={16} className="text-[#A3A3A3]" />}
+                  {bajo ? <IconAlertCircle size={16} className="text-red-400" /> : <IconPackage size={16} className="text-[#A3A3A3]" />}
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-white">{item.nombre}</div>

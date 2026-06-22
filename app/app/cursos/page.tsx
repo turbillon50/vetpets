@@ -1,7 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 import { CURSOS } from "@/lib/demo-data"
-import { GraduationCap, ChevronRight, Users } from "lucide-react"
+import { IconSchool, IconChevronRight, IconUsers } from "@tabler/icons-react"
 
 const nivelColor: Record<string,string> = {
   "Inicial": "#34D399",
@@ -53,11 +53,11 @@ export default function CursosPage() {
                 <div className="text-[10px] text-[#A3A3A3]">{c.sesiones}</div>
                 <div className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full"
                   style={{ background: "rgba(5,150,105,0.1)", color: "#34D399" }}>
-                  <Users size={10} />{c.alumnos_activos} activos
+                  <IconUsers size={10} />{c.alumnos_activos} activos
                 </div>
               </div>
               <button className="flex items-center gap-1 text-xs font-semibold text-[#D97706] hover:text-yellow-300 transition-colors">
-                Inscribir <ChevronRight size={14} />
+                Inscribir <IconChevronRight size={14} />
               </button>
             </div>
           </motion.div>

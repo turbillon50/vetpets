@@ -1,6 +1,6 @@
 "use client"
 import { ALUMNOS } from "@/lib/demo-data"
-import { GraduationCap } from "lucide-react"
+import { IconSchool } from "@tabler/icons-react"
 
 export default function InstitutoAdmin() {
   return (
@@ -18,7 +18,7 @@ export default function InstitutoAdmin() {
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(217,119,6,0.12)" }}>
-                  <GraduationCap size={18} className="text-yellow-400" />
+                  <IconSchool size={18} className="text-yellow-400" />
                 </div>
                 <div>
                   <div className="font-bold text-white">{a.mascota} <span className="text-[#A3A3A3] font-normal text-sm">— {a.raza}</span></div>

@@ -1,6 +1,6 @@
 "use client"
 import { CITAS } from "@/lib/demo-data"
-import { Calendar, Clock, Phone } from "lucide-react"
+import { IconCalendar, IconClock, IconPhone } from "@tabler/icons-react"
 
 export default function CitasAdmin() {
   return (
@@ -13,16 +13,16 @@ export default function CitasAdmin() {
               <div className="flex items-start gap-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                   style={{ background: "rgba(185,28,28,0.12)" }}>
-                  <Calendar size={20} className="text-red-400" />
+                  <IconCalendar size={20} className="text-red-400" />
                 </div>
                 <div>
                   <div className="font-bold text-white">{c.mascota}</div>
                   <div className="text-sm text-[#A3A3A3]">{c.propietario} · {c.tipo}</div>
                   <div className="text-sm text-[#525252]">Vet: {c.veterinario}</div>
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="flex items-center gap-1 text-xs text-[#A3A3A3]"><Calendar size={11} />{new Date(c.fecha).toLocaleDateString("es-MX",{weekday:"short",day:"numeric",month:"short"})}</div>
-                    <div className="flex items-center gap-1 text-xs text-[#D97706]"><Clock size={11} />{c.hora}</div>
-                    <div className="flex items-center gap-1 text-xs text-[#A3A3A3]"><Phone size={11} />{c.tel}</div>
+                    <div className="flex items-center gap-1 text-xs text-[#A3A3A3]"><IconCalendar size={11} />{new Date(c.fecha).toLocaleDateString("es-MX",{weekday:"short",day:"numeric",month:"short"})}</div>
+                    <div className="flex items-center gap-1 text-xs text-[#D97706]"><IconClock size={11} />{c.hora}</div>
+                    <div className="flex items-center gap-1 text-xs text-[#A3A3A3]"><IconPhone size={11} />{c.tel}</div>
                   </div>
                 </div>
               </div>

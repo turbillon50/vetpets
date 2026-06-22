@@ -1,107 +1,136 @@
 "use client"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { MASCOTAS, CITAS, VACUNAS, KPIS } from "@/lib/demo-data"
-import { Calendar, PawPrint, Hotel, Bell, ChevronRight, AlertCircle } from "lucide-react"
+import { MASCOTAS, CITAS, VACUNAS } from "@/lib/demo-data"
+import { IconCalendar, IconPaw, IconBuildingCastle, IconBell, IconChevronRight, IconClock } from "@tabler/icons-react"
+
+const ri = { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, ease: [0.22,1,.36,1] } }
+const cont = { animate: { transition: { staggerChildren: 0.07 } } }
 
 export default function AppDashboard() {
-  const proximaCita = CITAS[0]
-  const vacunaProxima = VACUNAS.filter(v => v.mascota_id === "m1")[0]
+  const proxCita = CITAS[0]
+  const vacuna = VACUNAS[0]
 
   return (
-    <div className="space-y-6">
-      {/* Greeting */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-black text-white">Hola, Sofía 👋</h1>
-        <p className="text-[#A3A3A3] text-sm mt-1">Todo al día con tus mascotas</p>
+    <motion.div initial="initial" animate="animate" variants={cont} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <motion.div variants={ri}>
+        <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--txt)", letterSpacing: "-0.5px" }}>Hola, Sofía 👋</h1>
+        <p style={{ fontSize: 13, color: "var(--txt3)", marginTop: 3 }}>Todo al día con tus mascotas</p>
       </motion.div>
 
-      {/* Alert vacuna */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-        className="rounded-xl p-4 flex items-start gap-3"
-        style={{ background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.25)" }}>
-        <Bell size={18} className="text-yellow-400 mt-0.5 shrink-0" />
-        <div>
-          <div className="text-sm font-semibold text-white">Vacuna próxima — Thor</div>
-          <div className="text-xs text-[#A3A3A3] mt-0.5">{vacunaProxima.nombre} vence el {new Date(vacunaProxima.proxima).toLocaleDateString("es-MX", { day:"numeric", month:"long" })}</div>
+      {/* Alerta vacuna */}
+      <motion.div variants={ri} style={{
+        padding: "14px 16px", borderRadius: 14,
+        background: "var(--amber-dim)", border: "1px solid rgba(245,158,11,0.2)",
+        display: "flex", alignItems: "center", gap: 12,
+      }}>
+        <IconBell size={16} stroke={2} style={{ color: "var(--amber)", flexShrink: 0 }} />
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: "var(--txt)" }}>Vacuna próxima — Thor</div>
+          <div style={{ fontSize: 11, color: "var(--txt3)", marginTop: 2 }}>
+            {vacuna.nombre} vence el {new Date(vacuna.proxima).toLocaleDateString("es-MX",{day:"numeric",month:"long"})}
+          </div>
         </div>
-        <Link href="/app/mascotas" className="ml-auto text-[#D97706] hover:text-yellow-300">
-          <ChevronRight size={16} />
-        </Link>
+        <IconChevronRight size={14} stroke={2} style={{ color: "var(--amber)" }} />
       </motion.div>
 
-      {/* Mis mascotas */}
+      {/* Mascotas */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-white">Mis mascotas</h2>
-          <Link href="/app/mascotas" className="text-xs text-red-400 hover:text-red-300 flex items-center gap-1">Ver todas <ChevronRight size={12} /></Link>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--txt)", letterSpacing: ".02em" }}>Mis mascotas</h2>
+          <Link href="/app/mascotas" style={{ display:"flex", alignItems:"center", gap:2, fontSize:11, color:"#f87171", textDecoration:"none", fontWeight:600 }}>
+            Ver todas <IconChevronRight size={12} stroke={2} />
+          </Link>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           {MASCOTAS.map((m) => (
-            <Link key={m.id} href="/app/mascotas"
-              className="rounded-xl p-4 flex items-start gap-3 hover:border-red-700 transition-all"
-              style={{ background: "#141414", border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div className="text-3xl">{m.foto}</div>
-              <div>
-                <div className="font-bold text-white text-sm">{m.nombre}</div>
-                <div className="text-xs text-[#A3A3A3]">{m.raza}</div>
-                <div className="text-xs text-[#A3A3A3]">{m.edad} · {m.peso}</div>
-                <div className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                  style={{ background: "rgba(5,150,105,0.12)", color: "#34D399" }}>
-                  <div className="w-1 h-1 rounded-full bg-emerald-400" /> {m.status}
+            <motion.div key={m.id} variants={ri} whileHover={{ y: -2 }}>
+              <Link href="/app/mascotas" style={{
+                display: "block", padding: 16, borderRadius: 16, textDecoration: "none",
+                background: "var(--card)", border: "1px solid var(--border)",
+                transition: "border-color 0.2s",
+              }}>
+                <div style={{ fontSize: 32, marginBottom: 10 }}>{m.foto}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "var(--txt)" }}>{m.nombre}</div>
+                <div style={{ fontSize: 11, color: "var(--txt3)", marginTop: 2 }}>{m.raza}</div>
+                <div style={{ fontSize: 10, color: "var(--txt3)" }}>{m.edad} · {m.peso}</div>
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: 4, marginTop: 8,
+                  padding: "3px 8px", borderRadius: 99, fontSize: 9, fontWeight: 600,
+                  background: "var(--green-dim)", color: "var(--green)",
+                }}>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--green)" }} />
+                  {m.status}
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
 
       {/* Próxima cita */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-white">Próxima cita</h2>
-          <Link href="/app/citas" className="text-xs text-red-400 hover:text-red-300 flex items-center gap-1">Ver agenda <ChevronRight size={12} /></Link>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--txt)" }}>Próxima cita</h2>
+          <Link href="/app/citas" style={{ display:"flex", alignItems:"center", gap:2, fontSize:11, color:"#f87171", textDecoration:"none", fontWeight:600 }}>
+            Ver agenda <IconChevronRight size={12} stroke={2} />
+          </Link>
         </div>
-        <div className="rounded-xl p-5" style={{ background: "#141414", border: "1px solid rgba(185,28,28,0.2)" }}>
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(185,28,28,0.15)" }}>
-                <Calendar size={20} className="text-red-400" />
+        <motion.div variants={ri} style={{
+          padding: 18, borderRadius: 16,
+          background: "var(--card)", border: "1px solid rgba(185,28,28,0.2)",
+        }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{
+                width: 42, height: 42, borderRadius: 12,
+                background: "rgba(185,28,28,0.12)", display: "flex",
+                alignItems: "center", justifyContent: "center",
+              }}>
+                <IconCalendar size={20} stroke={1.5} style={{ color: "#f87171" }} />
               </div>
               <div>
-                <div className="font-bold text-white">{proximaCita.tipo}</div>
-                <div className="text-xs text-[#A3A3A3]">{proximaCita.mascota} · {proximaCita.veterinario}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "var(--txt)" }}>{proxCita.tipo}</div>
+                <div style={{ fontSize: 11, color: "var(--txt3)", marginTop: 2 }}>{proxCita.mascota} · {proxCita.veterinario}</div>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-sm font-bold text-white">{new Date(proximaCita.fecha).toLocaleDateString("es-MX", { day:"numeric", month:"short" })}</div>
-              <div className="text-xs text-[#D97706]">{proximaCita.hora}</div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--txt)" }}>
+                {new Date(proxCita.fecha).toLocaleDateString("es-MX",{day:"numeric",month:"short"})}
+              </div>
+              <div style={{ fontSize: 11, color: "var(--amber)", display: "flex", alignItems: "center", gap: 3, justifyContent: "flex-end", marginTop: 2 }}>
+                <IconClock size={11} stroke={2} />{proxCita.hora}
+              </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Acciones rápidas */}
+      {/* Acciones */}
       <div>
-        <h2 className="text-base font-bold text-white mb-4">Acciones rápidas</h2>
-        <div className="grid grid-cols-3 gap-3">
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--txt)", marginBottom: 12 }}>Acciones rápidas</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
           {[
-            { href: "/app/citas", icon: <Calendar size={22} />, label: "Agendar cita", color: "#B91C1C" },
-            { href: "/app/hotel", icon: <Hotel size={22} />, label: "Reservar hotel", color: "#059669" },
-            { href: "/app/cursos", icon: <PawPrint size={22} />, label: "Ver cursos", color: "#D97706" },
+            { href: "/app/citas",  icon: <IconCalendar size={22} stroke={1.5} />, label: "Agendar cita",    color: "var(--red-2)" },
+            { href: "/app/hotel",  icon: <IconBuildingCastle size={22} stroke={1.5} />, label: "Reservar hotel", color: "var(--green)" },
+            { href: "/app/cursos", icon: <IconPaw size={22} stroke={1.5} />, label: "Ver cursos",     color: "var(--silver)" },
           ].map(a => (
-            <Link key={a.href} href={a.href}
-              className="rounded-xl p-4 flex flex-col items-center gap-2 text-center hover:scale-105 transition-transform"
-              style={{ background: "#141414", border: `1px solid rgba(255,255,255,0.06)` }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: `${a.color}22`, color: a.color }}>
-                {a.icon}
-              </div>
-              <span className="text-xs text-[#A3A3A3] font-medium leading-tight">{a.label}</span>
+            <Link key={a.href} href={a.href} style={{
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+              padding: "16px 8px", borderRadius: 14, textDecoration: "none",
+              background: "var(--card)", border: "1px solid var(--border)",
+              transition: "all 0.2s ease",
+            }}>
+              <div style={{
+                width: 42, height: 42, borderRadius: 12,
+                background: `${a.color}18`, color: a.color,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>{a.icon}</div>
+              <span style={{ fontSize: 10, color: "var(--txt2)", fontWeight: 500, textAlign: "center", lineHeight: 1.3 }}>{a.label}</span>
             </Link>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

@@ -3,8 +3,9 @@ import "./globals.css"
 import DemoModeSwitcher from "@/components/demo-mode-switcher"
 
 export const metadata: Metadata = {
-  title: "Vet & Pets Care — Clínica Veterinaria · Instituto K9 · Hotel Campestre",
-  description: "20 años de experiencia. Servicio médico veterinario en pequeñas y grandes especies. Estética canina y hotel campestre en Apan, Hidalgo.",
+  title: "Vet & Pets Care",
+  description: "Clínica Veterinaria · Instituto K9 · Hotel Campestre — Apan, Hidalgo. 20 años de experiencia.",
+  manifest: "/manifest.json",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

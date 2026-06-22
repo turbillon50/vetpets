@@ -1,9 +1,8 @@
 "use client"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Eye, EyeOff, ArrowRight, Phone } from "lucide-react"
+import { IconEye, IconEyeOff, IconArrowRight, IconPhone } from "@tabler/icons-react"
 import { CLINICA_INFO } from "@/lib/demo-data"
 
 export default function SignIn() {
@@ -16,7 +15,7 @@ export default function SignIn() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 600))
+    await new Promise(r => setTimeout(r, 700))
     if (email.toLowerCase().includes("admin") || email.toLowerCase().includes("beto")) {
       router.push("/admin")
     } else {
@@ -24,78 +23,115 @@ export default function SignIn() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4">
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(185,28,28,0.08) 0%, transparent 70%)" }} />
+  const inputStyle = {
+    width: "100%", padding: "12px 16px", borderRadius: 12,
+    background: "var(--surface)", border: "1px solid var(--border)",
+    color: "var(--txt)", fontSize: 14, outline: "none",
+    fontFamily: "inherit",
+  }
 
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-        className="relative w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-white text-3xl mx-auto mb-4 shadow-2xl"
-            style={{ background: "linear-gradient(135deg,#B91C1C,#7F1D1D)", boxShadow: "0 0 40px rgba(185,28,28,0.35)" }}>
-            V
-          </div>
-          <h1 className="text-2xl font-black text-white mb-1">Bienvenido</h1>
-          <p className="text-[#A3A3A3] text-sm">{CLINICA_INFO.nombre}</p>
+  return (
+    <div style={{
+      minHeight: "100vh", background: "var(--void)",
+      display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
+      position: "relative", overflow: "hidden",
+    }}>
+      {/* Glow bg */}
+      <div style={{
+        position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)",
+        width: 500, height: 500, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(155,28,28,0.15) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        style={{ width: "100%", maxWidth: 400, position: "relative" }}>
+
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <img src="/images/app-icon.png" alt="logo"
+            style={{ width: 64, height: 64, borderRadius: 18, margin: "0 auto 16px", display: "block" }} />
+          <h1 style={{ fontSize: 24, fontWeight: 800, color: "var(--txt)", letterSpacing: "-0.5px" }}>Bienvenido</h1>
+          <p style={{ fontSize: 13, color: "var(--txt3)", marginTop: 4 }}>{CLINICA_INFO.nombre}</p>
         </div>
 
-        {/* Card */}
-        <div className="rounded-2xl p-8" style={{ background: "#141414", border: "1px solid rgba(255,255,255,0.07)" }}>
-          <form onSubmit={handleLogin} className="space-y-5">
+        <div style={{
+          background: "var(--card)", border: "1px solid var(--border)",
+          borderRadius: 20, padding: 28,
+        }}>
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div>
-              <label className="block text-xs font-semibold text-[#A3A3A3] mb-2 uppercase tracking-wider">Correo electrónico</label>
+              <label style={{ display: "block", fontSize: 10, fontWeight: 600, color: "var(--txt3)", letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 8 }}>
+                Correo electrónico
+              </label>
               <input value={email} onChange={e => setEmail(e.target.value)}
                 type="email" placeholder="tu@correo.com" required
-                className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-[#525252] outline-none transition-all focus:ring-1 focus:ring-red-600"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }} />
+                style={inputStyle} />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#A3A3A3] mb-2 uppercase tracking-wider">Contraseña</label>
-              <div className="relative">
+              <label style={{ display: "block", fontSize: 10, fontWeight: 600, color: "var(--txt3)", letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 8 }}>
+                Contraseña
+              </label>
+              <div style={{ position: "relative" }}>
                 <input value={pass} onChange={e => setPass(e.target.value)}
                   type={showPass ? "text" : "password"} placeholder="••••••••" required
-                  className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-[#525252] outline-none transition-all focus:ring-1 focus:ring-red-600 pr-12"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }} />
+                  style={{ ...inputStyle, paddingRight: 46 }} />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#525252] hover:text-[#A3A3A3]">
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                  style={{
+                    position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
+                    background: "none", border: "none", cursor: "pointer", color: "var(--txt3)", padding: 0,
+                  }}>
+                  {showPass ? <IconEyeOff size={16} stroke={2} /> : <IconEye size={16} stroke={2} />}
                 </button>
               </div>
             </div>
 
-            <button type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shine-hover disabled:opacity-60"
-              style={{ background: loading ? "#7F1D1D" : "linear-gradient(135deg,#B91C1C,#7F1D1D)", boxShadow: "0 0 20px rgba(185,28,28,0.25)" }}>
+            <motion.button type="submit" disabled={loading}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                width: "100%", padding: "14px", borderRadius: 14, border: "none",
+                background: loading ? "var(--red)" : "linear-gradient(135deg, var(--red-2), var(--red))",
+                color: "var(--txt)", fontSize: 15, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                fontFamily: "inherit",
+                boxShadow: "0 0 0 0 var(--red-glow)",
+                animation: "glowPulse 2.5s ease-in-out infinite",
+              }}>
               {loading ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <svg width={18} height={18} viewBox="0 0 24 24" style={{ animation: "ringRot 1.2s linear infinite" }}>
+                  <circle cx={12} cy={12} r={9} stroke="rgba(255,255,255,0.3)" strokeWidth={2.5} fill="none" />
+                  <circle cx={12} cy={12} r={9} stroke="white" strokeWidth={2.5} fill="none"
+                    strokeLinecap="round" strokeDasharray="42 15" />
+                </svg>
               ) : (
-                <><span>Iniciar sesión</span><ArrowRight size={16} /></>
+                <><span>Iniciar sesión</span><IconArrowRight size={16} stroke={2} /></>
               )}
-            </button>
+            </motion.button>
           </form>
 
-          <div className="flex items-center my-6">
-            <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
-            <span className="px-3 text-xs text-[#525252]">o</span>
-            <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <p style={{ fontSize: 12, color: "var(--txt3)" }}>¿Sin cuenta aún?{" "}
+              <button onClick={() => router.push("/app")} style={{
+                background: "none", border: "none", color: "var(--red-2)", fontWeight: 600,
+                cursor: "pointer", fontSize: 12, fontFamily: "inherit",
+              }}>
+                Crear cuenta
+              </button>
+            </p>
           </div>
-
-          <p className="text-center text-xs text-[#A3A3A3] mb-4">¿Aún no tienes cuenta?</p>
-          <button onClick={() => router.push("/app")} className="w-full py-3 rounded-xl text-sm font-semibold text-[#A3A3A3] hover:text-white transition-colors"
-            style={{ border: "1px solid rgba(255,255,255,0.08)" }}>
-            Crear cuenta nueva
-          </button>
         </div>
 
-        <div className="text-center mt-6">
-          <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`} className="inline-flex items-center gap-2 text-sm text-[#A3A3A3] hover:text-[#D97706] transition-colors">
-            <Phone size={14} /> ¿Problemas para entrar? Llámanos
+        <div style={{ textAlign: "center", marginTop: 20 }}>
+          <a href={`https://wa.me/${CLINICA_INFO.whatsapp}`}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              fontSize: 12, color: "var(--txt3)", textDecoration: "none",
+            }}>
+            <IconPhone size={13} stroke={2} /> ¿Problemas? Contáctanos
           </a>
         </div>
-
-        <div className="text-center mt-4 text-[10px] text-[#525252]">
-          Demo: usa cualquier email. Con &quot;admin&quot; → panel admin.
+        <div style={{ textAlign: "center", marginTop: 8, fontSize: 10, color: "var(--txt3)" }}>
+          Demo: email con &quot;admin&quot; → panel admin
         </div>
       </motion.div>
     </div>
