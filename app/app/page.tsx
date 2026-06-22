@@ -1,130 +1,203 @@
 "use client"
-import { motion } from "framer-motion"
 import Link from "next/link"
-import { MASCOTAS, CITAS, VACUNAS } from "@/lib/demo-data"
-import { IconCalendar, IconPaw, IconBuildingCastle, IconBell, IconChevronRight, IconClock } from "@tabler/icons-react"
+import {
+  IconBell, IconCalendar, IconBuilding, IconSchool,
+  IconChevronRight, IconClock
+} from "@tabler/icons-react"
+import { MASCOTAS, CITAS } from "@/lib/demo-data"
 
-const ri = { initial:{opacity:0,y:10}, animate:{opacity:1,y:0}, transition:{duration:0.35,ease:[0.22,1,.36,1]} }
-const c  = { animate:{ transition:{ staggerChildren:0.06 } } }
-
-export default function AppDashboard() {
-  const proxCita = CITAS[0]
-  const vacuna   = VACUNAS[0]
+// Avatar circular con inicial — SIN emojis
+function PetAvatar({ nombre, color, size = 56 }: { nombre: string; color: string; size?: number }) {
   return (
-    <motion.div initial="initial" animate="animate" variants={c} style={{ display:"flex", flexDirection:"column", gap:18 }}>
-      <motion.div variants={ri}>
-        <h1 style={{ fontSize:22, fontWeight:800, color:"var(--color-text)", letterSpacing:"-0.5px" }}>Hola, Sofía 👋</h1>
-        <p style={{ fontSize:13, color:"var(--color-text-muted)", marginTop:3 }}>Todo al día con tus mascotas</p>
-      </motion.div>
-
-      {/* Alerta vacuna */}
-      <motion.div variants={ri} style={{
-        padding:"13px 14px", borderRadius:12,
-        background:"rgba(245,158,11,0.07)", border:"1px solid rgba(245,158,11,0.2)",
-        display:"flex", alignItems:"center", gap:10,
+    <div style={{
+      width: size, height: size, borderRadius: "50%",
+      background: color + "18",
+      border: `2px solid ${color}30`,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      flexShrink: 0,
+    }}>
+      <span style={{
+        fontSize: size * 0.38, fontWeight: 800,
+        color: color, lineHeight: 1, fontFamily: "inherit",
       }}>
-        <IconBell size={16} stroke={2} style={{ color:"var(--amber)", flexShrink:0 }} />
-        <div style={{ flex:1 }}>
-          <div style={{ fontSize:13, fontWeight:600, color:"var(--color-text)" }}>Vacuna próxima — Thor</div>
-          <div style={{ fontSize:11, color:"var(--color-text-muted)", marginTop:1 }}>
-            {vacuna.nombre} vence el {new Date(vacuna.proxima).toLocaleDateString("es-MX",{day:"numeric",month:"long"})}
-          </div>
-        </div>
-        <IconChevronRight size={14} stroke={2} style={{ color:"var(--amber)" }} />
-      </motion.div>
+        {nombre[0].toUpperCase()}
+      </span>
+    </div>
+  )
+}
 
-      {/* Mascotas */}
-      <div>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-          <h2 style={{ fontSize:14, fontWeight:700, color:"var(--color-text)" }}>Mis mascotas</h2>
-          <Link href="/app/mascotas" style={{ fontSize:11, fontWeight:600, color:"var(--red)", textDecoration:"none", display:"flex", alignItems:"center", gap:2 }}>
-            Ver todas <IconChevronRight size={12} stroke={2} />
-          </Link>
-        </div>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
-          {MASCOTAS.map(m => (
-            <motion.div key={m.id} variants={ri} whileHover={{ y:-2 }}>
-              <Link href="/app/mascotas" style={{
-                display:"block", padding:"14px", borderRadius:14, textDecoration:"none",
-                background:"var(--color-surface)", border:"1px solid var(--color-border)",
-                boxShadow:"var(--shadow-xs)",
-              }}>
-                <div style={{ fontSize:28, marginBottom:8 }}>{m.foto}</div>
-                <div style={{ fontSize:14, fontWeight:700, color:"var(--color-text)" }}>{m.nombre}</div>
-                <div style={{ fontSize:11, color:"var(--color-text-muted)", marginTop:1 }}>{m.raza}</div>
-                <div style={{ fontSize:10, color:"var(--color-text-muted)" }}>{m.edad} · {m.peso}</div>
-                <div style={{
-                  display:"inline-flex", alignItems:"center", gap:4, marginTop:8,
-                  padding:"2px 8px", borderRadius:99, fontSize:9, fontWeight:600,
-                  background:"rgba(5,150,105,0.09)", color:"#059669",
-                }}>
-                  <div style={{ width:5,height:5,borderRadius:"50%",background:"#059669" }} />
-                  {m.status}
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+export default function AppHome() {
+  const proxCita = CITAS[0]
+
+  return (
+    <div style={{
+      background: "#ffffff", minHeight: "100%",
+      paddingBottom: 20,
+    }}>
+
+      {/* ── HEADER ── */}
+      <div style={{ padding: "20px 20px 0" }}>
+        <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 2 }}>
+          Hola, Sofía
+        </p>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: "#111827", lineHeight: 1.2 }}>
+          Todo al día con tus mascotas
+        </h1>
       </div>
 
-      {/* Próxima cita */}
-      <div>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-          <h2 style={{ fontSize:14, fontWeight:700, color:"var(--color-text)" }}>Próxima cita</h2>
-          <Link href="/app/citas" style={{ fontSize:11, fontWeight:600, color:"var(--red)", textDecoration:"none", display:"flex", alignItems:"center", gap:2 }}>
-            Ver agenda <IconChevronRight size={12} stroke={2} />
-          </Link>
-        </div>
-        <motion.div variants={ri} style={{
-          padding:"15px 14px", borderRadius:14,
-          background:"var(--color-surface)", border:"1px solid var(--red-border)",
-          boxShadow:"var(--shadow-xs)",
+      {/* ── ALERTA VACUNA ── */}
+      <div style={{ padding: "16px 20px 0" }}>
+        <div style={{
+          background: "#fef3c7", border: "1px solid #fde68a",
+          borderRadius: 14, padding: "14px 16px",
+          display: "flex", alignItems: "center", gap: 12,
         }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <div style={{ width:40,height:40,borderRadius:12,background:"var(--red-light)",display:"flex",alignItems:"center",justifyContent:"center" }}>
-                <IconCalendar size={19} stroke={1.5} style={{ color:"var(--red)" }} />
-              </div>
-              <div>
-                <div style={{ fontSize:14, fontWeight:700, color:"var(--color-text)" }}>{proxCita.tipo}</div>
-                <div style={{ fontSize:11, color:"var(--color-text-muted)" }}>{proxCita.mascota} · {proxCita.veterinario}</div>
-              </div>
-            </div>
-            <div style={{ textAlign:"right" }}>
-              <div style={{ fontSize:13, fontWeight:700, color:"var(--color-text)" }}>
-                {new Date(proxCita.fecha).toLocaleDateString("es-MX",{day:"numeric",month:"short"})}
-              </div>
-              <div style={{ fontSize:11, color:"var(--amber)", display:"flex", alignItems:"center", gap:2, justifyContent:"flex-end", marginTop:1 }}>
-                <IconClock size={10} stroke={2} />{proxCita.hora}
-              </div>
-            </div>
+          <div style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: "#d97706", flexShrink: 0,
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <IconBell size={18} stroke={2} color="#fff" />
           </div>
-        </motion.div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#92400e", margin: 0 }}>
+              Vacuna próxima — Thor
+            </p>
+            <p style={{ fontSize: 12, color: "#b45309", margin: "2px 0 0" }}>
+              Octavalente vence el 15 de julio
+            </p>
+          </div>
+          <IconChevronRight size={16} stroke={2} color="#b45309" />
+        </div>
       </div>
 
-      {/* Acciones rápidas */}
-      <div>
-        <h2 style={{ fontSize:14, fontWeight:700, color:"var(--color-text)", marginBottom:10 }}>Acciones rápidas</h2>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10 }}>
-          {[
-            { href:"/app/citas",  Icon:IconCalendar,        label:"Agendar cita",    color:"var(--red)",   bg:"var(--red-light)" },
-            { href:"/app/hotel",  Icon:IconBuildingCastle,  label:"Reservar hotel",  color:"#059669",      bg:"rgba(5,150,105,0.09)" },
-            { href:"/app/cursos", Icon:IconPaw,             label:"Ver cursos",      color:"#7c3aed",      bg:"rgba(124,58,237,0.09)" },
-          ].map(a => (
-            <Link key={a.href} href={a.href} style={{
-              display:"flex", flexDirection:"column", alignItems:"center", gap:8,
-              padding:"14px 8px", borderRadius:14, textDecoration:"none",
-              background:"var(--color-surface)", border:"1px solid var(--color-border)",
-              boxShadow:"var(--shadow-xs)",
-            }}>
-              <div style={{ width:40,height:40,borderRadius:12,background:a.bg,display:"flex",alignItems:"center",justifyContent:"center" }}>
-                <a.Icon size={20} stroke={1.5} style={{ color:a.color }} />
+      {/* ── MIS MASCOTAS ── */}
+      <div style={{ padding: "24px 20px 0" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: "#111827" }}>Mis mascotas</h2>
+          <Link href="/app/mascotas" style={{
+            fontSize: 13, fontWeight: 600, color: "#dc2626", textDecoration: "none",
+            display: "flex", alignItems: "center", gap: 2,
+          }}>
+            Ver todas <IconChevronRight size={14} stroke={2.5} />
+          </Link>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          {MASCOTAS.map(m => (
+            <Link key={m.id} href="/app/mascotas" style={{ textDecoration: "none" }}>
+              <div style={{
+                background: "#fff", border: "1px solid #e5e7eb",
+                borderRadius: 16, padding: "16px 14px",
+                boxShadow: "0 1px 3px rgba(0,0,0,.06)",
+                transition: "box-shadow .15s",
+              }}>
+                {/* Avatar con inicial — NO emoji */}
+                <PetAvatar nombre={m.nombre} color={m.avatar_color} size={52} />
+
+                <p style={{ fontSize: 16, fontWeight: 700, color: "#111827", margin: "12px 0 2px" }}>
+                  {m.nombre}
+                </p>
+                <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>{m.raza}</p>
+                <p style={{ fontSize: 11, color: "#9ca3af", margin: "2px 0 10px" }}>
+                  {m.edad} · {m.peso}
+                </p>
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 5,
+                  background: "#d1fae5", color: "#065f46",
+                  borderRadius: 99, padding: "3px 10px", fontSize: 11, fontWeight: 600,
+                }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#059669", display: "inline-block" }} />
+                  {m.status}
+                </span>
               </div>
-              <span style={{ fontSize:10, color:"var(--color-text-muted)", fontWeight:500, textAlign:"center", lineHeight:1.3 }}>{a.label}</span>
             </Link>
           ))}
         </div>
       </div>
-    </motion.div>
+
+      {/* ── PRÓXIMA CITA ── */}
+      <div style={{ padding: "24px 20px 0" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: "#111827" }}>Próxima cita</h2>
+          <Link href="/app/citas" style={{
+            fontSize: 13, fontWeight: 600, color: "#dc2626", textDecoration: "none",
+            display: "flex", alignItems: "center", gap: 2,
+          }}>
+            Ver agenda <IconChevronRight size={14} stroke={2.5} />
+          </Link>
+        </div>
+
+        <div style={{
+          background: "#fff", border: "1px solid #e5e7eb",
+          borderRadius: 16, padding: "16px",
+          boxShadow: "0 1px 3px rgba(0,0,0,.06)",
+          display: "flex", alignItems: "center", gap: 14,
+        }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+            background: "#fee2e2",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <IconCalendar size={22} stroke={1.8} color="#dc2626" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: 0 }}>
+              {proxCita.tipo}
+            </p>
+            <p style={{ fontSize: 12, color: "#6b7280", margin: "3px 0 0" }}>
+              {proxCita.mascota} · {proxCita.veterinario}
+            </p>
+          </div>
+          <div style={{ textAlign: "right", flexShrink: 0 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#111827", margin: 0 }}>
+              28 jun
+            </p>
+            <p style={{
+              fontSize: 12, fontWeight: 600, color: "#d97706", margin: "2px 0 0",
+              display: "flex", alignItems: "center", gap: 3,
+            }}>
+              <IconClock size={12} stroke={2} /> {proxCita.hora}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── ACCIONES RÁPIDAS ── */}
+      <div style={{ padding: "24px 20px 0" }}>
+        <h2 style={{ fontSize: 17, fontWeight: 700, color: "#111827", marginBottom: 14 }}>
+          Acciones rápidas
+        </h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+          {[
+            { label: "Agendar cita",    icon: <IconCalendar  size={24} stroke={1.8} color="#dc2626" />, bg: "#fee2e2", href: "/app/citas"   },
+            { label: "Reservar hotel",  icon: <IconBuilding  size={24} stroke={1.8} color="#059669" />, bg: "#d1fae5", href: "/app/hotel"   },
+            { label: "Ver cursos",      icon: <IconSchool    size={24} stroke={1.8} color="#7c3aed" />, bg: "#ede9fe", href: "/app/cursos"  },
+          ].map(({ label, icon, bg, href }) => (
+            <Link key={label} href={href} style={{ textDecoration: "none" }}>
+              <div style={{
+                background: "#fff", border: "1px solid #e5e7eb",
+                borderRadius: 14, padding: "14px 10px",
+                boxShadow: "0 1px 3px rgba(0,0,0,.05)",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", gap: 8, textAlign: "center",
+              }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 12,
+                  background: bg,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  {icon}
+                </div>
+                <span style={{ fontSize: 11, color: "#374151", fontWeight: 600, lineHeight: 1.3 }}>
+                  {label}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+    </div>
   )
 }
